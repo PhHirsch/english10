@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Night at the Museum – If clauses I + II</title>
+<link rel="stylesheet" href="ifkit.css?v=1">
+<style>
+  :root{--bg:#0c0b10;--head:rgba(12,11,16,.92);--panel:linear-gradient(180deg,#221d2b,#17141e);--box:#1b1722;--line:#3d3450;--txt:#efe9f6;--muted:#a79bbb;
+    --acc:#e8b84a;--accTxt:#2a1e00;--ok:#6fe39a;--bad:#ff6b7a;--paper:#efe3c8;--paperTxt:#3a2c18}
+  body{background:radial-gradient(circle at 50% -10%,rgba(232,184,74,.16),transparent 45%),var(--bg)}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script src="game.js?v=1"></script>
+<script src="ifkit.js?v=1"></script>
+<script>
+const STAGES = [
+ { tag:"Room 1 of 7", icon:"🏛️", title:"The Entrance Hall", type:"quiz",
+   npc:"Intruder detected! … Oh, it's only a student. I am ARGUS, the security computer. All doors are locked until 7 am. I only open doors for visitors who understand my rules. Read the sign on the wall.",
+   read:`<div class="h">Museum rules</div>If you <u>touch</u> the paintings, the alarm <u>will ring</u>.<br>If you <u>run</u>, you <u>will break</u> something.<br>If a door <u>is</u> locked, ARGUS <u>will help</u> you.<br>Visitors <u>won't get</u> in if they <u>don't have</u> a ticket.`,
+   task:"Look at the sign and answer ARGUS's questions.", taskDe:"Schau dir die Sätze auf dem Schild genau an und beantworte die Fragen.",
+   items:[
+     {q:"What do these sentences talk about?", o:["Things that are possible and can really happen","Things that happened yesterday","Things that are impossible"], why:"These are real, possible situations. <span class='de'>Mögliche, realistische Situationen.</span>"},
+     {q:"Look at the <b>if-part</b>: <i>If you touch … · If a door is …</i> – which tense is it?", o:["simple present","simple past","will-future"], why:"if-clause → simple present."},
+     {q:"Look at the <b>other part</b> (main clause): <i>the alarm will ring · you will break</i> – which form is it?", o:["will / won't + infinitive","simple present","simple past"], why:"main clause → will + infinitive."},
+     {q:"Is this sentence correct? <i>“If you will touch the paintings, the alarm will ring.”</i>", o:["No – there is never <b>will</b> in the if-clause.","Yes, that's fine."], why:"Never will in the if-clause! <span class='de'>Im if-Satz steht nie will.</span>"},
+     {q:"Look at the commas. When is there a comma?", o:["When the if-clause comes first","When the if-clause comes second","Always"], why:"If-clause first → comma. <span class='de'>Steht der if-Satz vorn, kommt ein Komma.</span>"}
+   ],
+   doneTitle:"DOOR 1 UNLOCKED", doneText:"Correct. These are called <b>if clauses type I</b>. Read the rule card. Then go to the Dinosaur Hall – its door has a combination lock.", rulesAfter:1 },
+
+ { tag:"Room 2 of 7", icon:"🦖", title:"The Dinosaur Hall", type:"dial", ty:1,
+   npc:"The door to the Egyptian Room has a word lock. Turn the dials until the sentence is correct. Careful – the T. rex is watching you!",
+   task:"Tap the dials until the sentence is correct. Then open the lock.", taskDe:"Tippe so oft auf ein Rädchen, bis das richtige Wort erscheint. Dann „Open the lock“.",
+   items:[
+     {t:"If you {0} the T. rex's tail, its eyes {1} red.", g:[["touch","will touch","touched"],["will glow","glow","glowed"]], a:["touch","will glow"]},
+     {t:"ARGUS {0} the door if you {1} the right code.", g:[["will open","opens","would open"],["enter","will enter","entered"]], a:["will open","enter"]},
+     {t:"If the night guard {0} you, he {1} your teacher.", g:[["find","finds","will find"],["will call","calls","would call"]], a:["finds","will call"]},
+     {t:"If you {0} the map, you {1} the exit.", g:[["don't read","won't read","doesn't read"],["won't find","don't find","wouldn't find"]], a:["don't read","won't find"]},
+     {t:"If the lights {0} out, the emergency lamps {1} on.", g:[["go","will go","goes"],["will come","come","came"]], a:["go","will come"]}
+   ],
+   doneTitle:"LOCK OPEN", doneText:"Well done. Now enter the Egyptian Room. I hope you're not afraid of mummies." },
+
+ { tag:"Room 3 of 7", icon:"⚱️", title:"The Egyptian Room", type:"type", ty:1,
+   npc:"This door has a keyboard. Type the missing verbs. And use your torch – it's very dark in here!",
+   task:"Write the correct form of the verbs in brackets.", taskDe:"Schreibe die richtige Verbform. Kurzformen (won't, doesn't …) sind erlaubt.",
+   items:[
+     {t:"If you {0} at the mummy for a long time, you {1} a small cat on her necklace.", v:["look","see"], a:["look","will see"]},
+     {t:"The alarm {0} if you {1} slowly.", v:["not ring","walk"], a:["won't ring|will not ring","walk"]},
+     {t:"If the guard {0} in here, he {1} you behind the statue.", v:["come","not see"], a:["comes","won't see|will not see"]},
+     {t:"If my phone battery {0}, I {1} any light.", v:["die","not have"], a:["dies","won't have|will not have"]}
+   ],
+   doneTitle:"KEYBOARD ACCEPTED", doneText:"The next room is the Painting Gallery. The founder of this museum, Lady Ashworth, kept a diary. The code for the vault is hidden in it." },
+
+ { tag:"Room 4 of 7", icon:"🖼️", title:"The Painting Gallery", type:"quiz",
+   npc:"This is Lady Ashworth's portrait. She opened this museum. Here is a page from her diary – she wrote it when she was 20. Read it carefully. Her sentences are different from mine!",
+   read:`<div class="h">Lady Ashworth's diary · London, 1878</div>If I <u>were</u> a man, I <u>would study</u> at Oxford University.<br>If I <u>had</u> more money, I <u>would build</u> a museum for everyone.<br>If my father <u>listened</u> to me, he <u>would let</u> me travel to Egypt.<br>I <u>wouldn't be</u> so lonely if I <u>had</u> a sister.`,
+   task:"Read the diary and answer ARGUS's questions.", taskDe:"Lies das Tagebuch und beantworte die Fragen.",
+   items:[
+     {q:"Was Lady Ashworth a man? Did she have a sister?", o:["No – she is imagining things that are not real.","Yes – all these things were true."], why:"These sentences are about <b>unreal</b> situations – dreams and wishes. <span class='de'>Unwirkliche Situationen, Wünsche, Träume.</span>"},
+     {q:"Look at the <b>if-part</b>: <i>If I had … · If my father listened …</i> – which tense is it?", o:["simple past","simple present","will-future"], why:"if-clause → simple past."},
+     {q:"Is she writing about the past? (<i>If I had more money …</i>)", o:["No – it's about her life now. The past form only shows: it's not real.","Yes – it's about her past."], why:"Simple past here = unreal, not past time! <span class='de'>Die Vergangenheitsform zeigt hier: nicht wirklich.</span>"},
+     {q:"Look at the <b>main clause</b>: <i>I would build … · he would let me …</i> – which form is it?", o:["would / wouldn't + infinitive","will + infinitive","simple past"], why:"main clause → would + infinitive."},
+     {q:"<i>If I ___ a man …</i> – which form of <b>be</b> does Lady Ashworth use?", o:["were","am","will be"], why:"If I / he / she / it <b>were</b> … (in spoken English, <i>was</i> is also used). <span class='de'>Typisch: If I were …</span>"},
+     {q:"Which sentence sounds <b>less likely</b> – more like a dream?", o:["If I had time, I would help you.","If I have time, I will help you."], why:"Type II = unreal or very unlikely. Type I = possible. <span class='de'>Typ II: unwahrscheinlich/unwirklich, Typ I: gut möglich.</span>"}
+   ],
+   doneTitle:"SECRET FOUND", doneText:"Correct! These are <b>if clauses type II</b>. Read the rule card – it now shows both types. Then go to the vault.", rulesAfter:2 },
+
+ { tag:"Room 5 of 7", icon:"🔐", title:"The Treasure Vault", type:"type", ty:2, digits:"1878",
+   npc:"The vault door needs a four-digit code. Lady Ashworth left four sentences with gaps. Every correct sentence shows you one digit.",
+   task:"Write the correct form of the verbs. Every correct sentence gives you one digit of the code.", taskDe:"Typ II: if-Satz im simple past, Hauptsatz mit would. Jeder richtige Satz verrät eine Ziffer.",
+   items:[
+     {t:"If I {0} the code, I {1} the vault.", v:["know","open"], a:["knew","would open"]},
+     {t:"If you {0} a thief, ARGUS {1} you.", v:["be","not help"], a:["were|was","wouldn't help|would not help"]},
+     {t:"If the vault {0} a window, we {1} the torch.", v:["have","not need"], a:["had","wouldn't need|would not need"]},
+     {t:"Lady Ashworth {0} proud if she {1} her museum today.", v:["be","see"], a:["would be","saw"]}
+   ],
+   doneTitle:"CODE: 1 – 8 – 7 – 8", doneText:"1878 – the year of Lady Ashworth's diary! The vault is open … but the treasure is a long corridor. Follow it to the Hall of Clocks.", doneIcon:"🔓" },
+
+ { tag:"Room 6 of 7", icon:"🕰️", title:"The Hall of Clocks", type:"order",
+   npc:"Tick, tock … The clocks here only stop if you build perfect sentences. And if they stop, the door to the exit will open.",
+   task:"Put the words in the right order.", taskDe:"Tippe die Wörter in der richtigen Reihenfolge an. Nochmal tippen = zurücklegen. Achte auf das Komma!",
+   items:[
+     ["If","I","had","a","key",",","I","would","open","this","door","."],
+     ["I","would","call","my","mum","if","my","phone","had","a","signal","."],
+     ["If","you","stop","the","clocks",",","the","exit","will","open","."]
+   ],
+   doneTitle:"THE CLOCKS HAVE STOPPED", doneText:"Silence. Now you are at the main door. One last test: Is a situation real or unreal?" },
+
+ { tag:"Exit · 7 of 7", icon:"🚪", title:"The Main Door", type:"choose",
+   npc:"Last test! I describe a situation. You choose the sentence that fits: real/possible (type I) or unreal (type II)?",
+   task:"Read the situation. Choose the sentence that fits.", taskDe:"Ist die Situation möglich (Typ I) oder unwirklich (Typ II)? Wähle den passenden Satz.",
+   items:[
+     {sit:"You have a torch in your bag.", o:["If I need light, I will use my torch.","If I needed light, I would use my torch."], why:"You really have a torch → possible → type I.", no:"You really <b>have</b> a torch – so it's possible, not a dream. <span class='de'>Das ist real → Typ I.</span>"},
+     {sit:"You don't have a key.", o:["If I had a key, I would open the door.","If I have a key, I will open the door."], why:"No key → unreal → type II.", no:"You <b>don't</b> have a key – that's unreal. <span class='de'>Unwirklich → Typ II.</span>"},
+     {sit:"Maybe the night guard will come in the morning.", o:["If the guard comes, I will explain everything.","If the guard came, I would explain everything."], why:"Maybe = possible → type I.", no:"<b>Maybe</b> → it's possible. <span class='de'>Möglich → Typ I.</span>"},
+     {sit:"You are not a superhero.", o:["If I were a superhero, I would fly out of the window.","If I am a superhero, I will fly out of the window."], why:"Not a superhero → unreal → type II.", no:"You are <b>not</b> a superhero. <span class='de'>Unwirklich → Typ II.</span>"},
+     {sit:"Your teacher is probably looking for you.", o:["If my teacher calls, I will say sorry.","If my teacher called, I would say sorry."], why:"Probably = possible → type I.", no:"It's quite <b>likely</b> that your teacher calls. <span class='de'>Gut möglich → Typ I.</span>"},
+     {sit:"You can't read ancient Egyptian.", o:["If I could read ancient Egyptian, I would understand the hieroglyphs.","If I can read ancient Egyptian, I will understand the hieroglyphs."], why:"You can't → unreal → type II.", no:"You <b>can't</b> read it. <span class='de'>Unwirklich → Typ II.</span>"}
+   ],
+   doneTitle:"ONE LAST THING …", doneText:"I have written a report about you for the night guard. But my grammar module is broken – there are exactly three mistakes in it. Find them, and I'll open the door!", nextLabel:"Read the report →" },
+
+ { tag:"Exit", icon:"⭐", title:"ARGUS's report", type:"spot",
+   npc:"Find my three mistakes. Then I'll open the main door. Promise!",
+   task:"Tap the three wrong sentences. Then press OPEN.", taskDe:"Tippe die drei falschen Sätze an und drücke dann auf OPEN.", checkLabel:"🚪 OPEN", finalLabel:"🚪 Walk out",
+   items:[
+     {s:"If the student will press the green button, the door will open.", wrong:true, fix:"If the student presses the green button, the door will open."},
+     {s:"If I had arms, I would shake the student's hand.", wrong:false},
+     {s:"If the guard sees the student, he would be surprised.", wrong:true, fix:"If the guard sees the student, he will be surprised."},
+     {s:"The student's parents will be happy if the student comes home soon.", wrong:false},
+     {s:"If I knew the student's phone number, I will call the parents.", wrong:true, fix:"If I knew the student's phone number, I would call the parents."},
+     {s:"If I were a person, I would be the student's friend.", wrong:false}
+   ],
+   doneTitle:"", doneText:"" }
+];
+/* Hinweis: Die Stufe "Exit" zählt nicht als eigener Raum in der Anzeige oben. */
+
+IFK({
+  id:"if-museum", key:"ifMuseum", title:"Night at the Museum",
+  npcIcon:"🤖", npcName:"ARGUS",
+  stages: STAGES,
+  init: () => ({ bat: 100 }),
+  onMistake: S => { S.bat = Math.max(5, S.bat - 4); },
+  hud: S => { const c = S.bat > 60 ? "var(--ok)" : S.bat > 30 ? "var(--acc)" : "var(--bad)";
+    return `<div class="meter">🔦<div class="bar"><i style="width:${S.bat}%;background:${c}"></i></div>${S.bat}%</div>`; },
+  rules: lvl => `<span class="tag">ARGUS rule card</span><h2>If clauses</h2>
+    <div class="rule"><b>Type I – real / possible</b> <span class="de">(möglich, kann wirklich passieren)</span><br>
+      if-clause: <b>simple present</b> &nbsp;|&nbsp; main clause: <b>will / won't + verb</b><br>
+      <span class="ex">If you <u>touch</u> the paintings, the alarm <u>will ring</u>.</span></div>
+    ${lvl >= 2 ? `<div class="rule"><b>Type II – unreal / unlikely</b> <span class="de">(unwirklich, nur vorgestellt)</span><br>
+      if-clause: <b>simple past</b> &nbsp;|&nbsp; main clause: <b>would / wouldn't + verb</b><br>
+      <span class="ex">If I <u>had</u> more money, I <u>would build</u> a museum.</span><br>
+      ⚠️ The past form does <b>not</b> mean past time! · If I / he / she / it <b>were</b> … (also: was)</div>` : ""}
+    <div class="rule">⚠️ <b>Never will or would in the if-clause!</b><br><span class="ex">✗ If you will press … ✓ If you press … · ✗ If I would have … ✓ If I had …</span></div>
+    <div class="rule">If-clause first → <b>comma</b>. If-clause second → no comma.<br><span class="ex">If it rains, we will stay. · We will stay if it rains.</span></div>
+    <p class="de">${lvl >= 2 ? "Typ I: möglich – simple present + will. Typ II: unwirklich – simple past + would." : "Typ I: im if-Satz simple present, im Hauptsatz will + Grundform."} Nie will/would im if-Satz.</p>`,
+  startLabel:"🔦 Switch on your torch",
+  startHTML:`<span class="tag">School trip · 9 pm</span><h1>Night at the Museum</h1>
+    <p>Your class is visiting the City History Museum. You want to take one more photo in the storeroom – and you forget the time. When you come out, it's <b>9 pm</b>. The museum is closed, the lights are off, and every door is locked. Your phone has no signal and only a little battery left.</p>
+    <p>Suddenly a voice speaks from the loudspeakers: the security computer <b>ARGUS</b>. Get through all the rooms and out of the museum!</p>
+    <p class="de">Du kommst nur weiter, wenn alles richtig ist. Jeder Fehler kostet Akku für deine Taschenlampe 🔦. Falsche Aufgaben kommen noch einmal.</p>`,
+  finishHTML: (S, name) => `<div class="big">🌙</div><span class="tag">You escaped!</span><h1>Well done, ${name}!</h1>
+    <p>The main door opens. Outside, your teacher and the night guard are waiting with a hot chocolate. ARGUS says: “If you visit again, I will open all the doors for you!”</p>
+    <p style="font-size:22px">Torch battery left: <b style="color:var(--acc)">${S.bat} %</b></p>
+    <p style="font-size:22px">Rank: <b>${S.bat >= 80 ? "Master Detective 🏆" : S.bat >= 50 ? "Museum Explorer 🥈" : "Night Visitor 🥉"}</b></p>`
+});
+</script>
+</body>
+</html>
