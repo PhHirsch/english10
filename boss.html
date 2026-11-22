@@ -57,7 +57,7 @@
 <main id="app"></main>
 <script src="game.js?v=1"></script>
 <script src="bosses.js?v=1"></script>
-<script src="vocab-u2.js?v=1"></script>
+<script src="vocab-u2.js?v=2"></script>
 <script>
 const $ = id => document.getElementById(id);
 const P = new URLSearchParams(location.search);
@@ -96,6 +96,7 @@ function variants(en) {
     const SB = ["sb", "", "someone", "somebody"], STH = ["sth", "", "something"];
     if (/\b(sb|sth)\b/.test(v)) SB.forEach(a => STH.forEach(b => out.add(norm(v.replace(/\bsb\b/, a).replace(/\bsth\b/, b)))));
   });
+  [...out].forEach(v => { if (/\bone's\b/.test(v)) ["your", "my", "his", "her", "their", "our"].forEach(r => out.add(v.replace(/\bone's\b/, r))); });
   if (en === "ad(vert)") out.add("advertisement");
   return [...out].filter(Boolean);
 }

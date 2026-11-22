@@ -1,6 +1,6 @@
 /* Orange Line 6 – Unit 2 "Inside India" – Vokabeln (SB S. 187–193)
    Format: [englisch, deutsch] – Klammern im Englischen = optional beim Eintippen.
-   Blau gedruckte Wörter (nur zum Verstehen) sind nicht enthalten. */
+   Blau gedruckte Wörter sind enthalten. */
 window.VOCAB = window.VOCAB || {};
 VOCAB["u2"] = {
   unit: "Unit 2 · Inside India",
@@ -25,7 +25,7 @@ VOCAB["u2"] = {
         ["travel", "Reise-"], ["period of time", "Zeitraum"], ["papers", "Unterlagen; Dokumente; Papiere"], ["travelling", "(das) Reisen"],
         ["expense", "Kosten; Ausgabe"], ["contract", "Vertrag"], ["to recommend", "empfehlen"], ["to volunteer", "sich freiwillig melden"],
         ["recommendation", "Empfehlung; Vorschlag"], ["description", "Beschreibung"], ["payment", "Zahlung; Bezahlung"], ["trial", "Probe"],
-        ["offer", "Angebot"], ["working conditions", "Arbeitsbedingungen"]
+        ["offer", "Angebot"], ["promotion", "Förderung; Beförderung"], ["trial period", "Probezeit"], ["to dismiss sb", "jmdn. kündigen; jmdn. entlassen"], ["working conditions", "Arbeitsbedingungen"]
       ] },
     { id: "boss-u2-st1b", part: "Station 1", title: "Volunteering abroad", pages: "p. 188–189 (building – Thailand)", boss: "locker", bossName: "Guest House Locker",
       words: [
@@ -35,14 +35,14 @@ VOCAB["u2"] = {
         ["noise", "Lärm"], ["exhausted", "erschöpft"], ["to make sb feel welcome", "jmdn. freundlich aufnehmen"], ["at once", "sofort; plötzlich"],
         ["throughout", "während; immer; durchgehend"], ["stay", "Aufenthalt"], ["to get over sth", "über etw. hinwegkommen; mit etw. fertigwerden"], ["from then on", "von da an; ab dann; seither"],
         ["foreigner", "Ausländer; Ausländerin; Fremder; Fremde"], ["whatever", "egal was; egal welche"], ["smiling", "lächelnd"], ["highly", "sehr"],
-        ["first of all", "erstens; zuerst"], ["Thailand", "Thailand"]
+        ["first of all", "erstens; zuerst"], ["disadvantage", "Nachteil"], ["Thailand", "Thailand"]
       ] },
     { id: "boss-u2-st2a", part: "Station 2", title: "Production", pages: "p. 189 (box: logistics – transport)", boss: "robot", bossName: "Warehouse Robot",
       words: [
         ["logistics", "Logistik"], ["freight", "Fracht; Güter"], ["raw material", "Rohmaterial; Rohstoff"], ["to ship", "verschiffen; versenden; befördern"],
         ["to assemble", "zusammenbauen; montieren"], ["finished", "fertig"], ["to deliver", "liefern"], ["to import", "importieren; einführen"],
         ["to handle", "hier: umschlagen"], ["warehouse", "Lager; Lagerhalle; Depot"], ["to store", "lagern; aufbewahren; speichern"], ["to pack", "verpacken"],
-        ["to provide", "bieten; bereitstellen; versorgen"], ["global", "weltweit; global"], ["transport", "Verkehrsmittel; Transportmittel"]
+        ["to provide", "bieten; bereitstellen; versorgen"], ["assembly", "Fertigung; Montage"], ["delivery", "Lieferung; Auslieferung; Zustellung"], ["global", "weltweit; global"], ["transport", "Verkehrsmittel; Transportmittel"]
       ] },
     { id: "boss-u2-st2b", part: "Station 2", title: "In the office", pages: "p. 190 (to be connected – to design)", boss: "bossy", bossName: "Office Tyrant",
       words: [
@@ -50,25 +50,34 @@ VOCAB["u2"] = {
         ["airline", "Fluggesellschaft"], ["office", "hier: Geschäftsstelle"], ["to award sb sth", "jmdm. etw. verleihen"], ["responsibility", "Verantwortung"],
         ["employee", "Mitarbeiter; Mitarbeiterin; Arbeitnehmer; Arbeitnehmerin; Angestellter; Angestellte"], ["generous", "großzügig"], ["benefit", "Leistung; Vergünstigung; Vorteil"], ["internship", "Praktikum"],
         ["training", "Schulungs-; Ausbildungs-"], ["updated", "aktualisiert"], ["to address", "ansprechen; adressieren"], ["to research", "recherchieren; erforschen; untersuchen"],
-        ["to promote", "werben für"], ["e-book reader", "E-Book-Reader"], ["electric", "elektrisch"], ["coffee maker", "Kaffeemaschine"],
+        ["to promote", "werben für"], ["research", "Recherche; Forschung"], ["promotion", "Werbung"], ["test", "Prüfung; Probe; Untersuchung; Versuch"], ["e-book reader", "E-Book-Reader"], ["electric", "elektrisch"], ["coffee maker", "Kaffeemaschine"],
         ["camera", "Fotoapparat; Kamera"], ["noon", "Mittag"], ["to design", "entwerfen; gestalten"]
       ] },
-    { id: "boss-u2-rc1", part: "Reading corner", title: "Gandhi (1)", pages: "p. 191 (soul – to beat)", boss: "tornado", bossName: "Storm of Protest",
+    { id: "boss-u2-rc1", part: "Reading corner", title: "Gandhi (1)", pages: "p. 191 (file – to put one's life in danger)", boss: "tornado", bossName: "Storm of Protest",
       words: [
         ["soul", "Seele"], ["extremist", "radikal; extremistisch; Extremist; Extremistin"], ["Hindu", "Hindu; hinduistisch"], ["to shoot", "erschießen"],
         ["worldwide", "weltweit"], ["law", "Jura"], ["lawyer", "Anwalt; Anwältin; Jurist; Juristin"], ["the British", "die Briten"],
         ["to achieve", "erreichen; erfolgreich sein; leisten; vollbringen"], ["to boycott", "boykottieren"], ["imported", "importiert; eingeführt"], ["resistance", "Widerstand; Resistenz"],
         ["to prove successful", "sich gut bewähren"], ["conflict", "Konflikt; Auseinandersetzung"], ["march", "Marsch; Kundgebung"], ["to stand up for sth", "sich einsetzen für"],
-        ["presenter", "Moderator; Moderatorin"], ["to prohibit", "untersagen; verbieten"], ["silently", "lautlos; leise; schweigend"], ["to beat", "schlagen; besiegen"]
+        ["presenter", "Moderator; Moderatorin"], ["to prohibit", "untersagen; verbieten"], ["silently", "lautlos; leise; schweigend"], ["to beat", "schlagen; besiegen"], ["beating", "Prügel"], ["to put one's life in danger", "sich in Gefahr begeben; sich in Gefahr bringen"],
+        ["file", "Akte; Mappe; Datei"], ["obituary", "Traueranzeige; Nachruf"], ["first-class", "Erste-Klasse-"], ["guard", "hier: Zugbegleiter; Zugbegleiterin"],
+        ["platform", "Bahnsteig"], ["writings", "Schriften; Werke"], ["inspiration", "Eingebung; Inspiration"], ["basic food", "Grundnahrungsmittel"]
       ] },
-    { id: "boss-u2-rc2", part: "Reading corner", title: "Gandhi (2)", pages: "p. 192–193 (to draw attention to sth – packaging)", boss: "ghost", bossName: "Shadow of Injustice",
+    { id: "boss-u2-rc2", part: "Reading corner", title: "Gandhi (2)", pages: "p. 192 (to draw attention to sth – engaged in sth)", boss: "ghost", bossName: "Shadow of Injustice",
       words: [
         ["to draw attention to sth", "auf etw. aufmerksam machen; die Aufmerksamkeit auf etw. lenken"], ["injustice", "Ungerechtigkeit"], ["to hear about sth", "etw. erfahren"], ["speaker", "Sprecher; Sprecherin; Redner; Rednerin"],
-        ["injured", "verletzt"], ["purely", "bloß; völlig; rein"], ["genuine", "echt; aufrichtig; authentisch"], ["revolution", "Revolution"],
-        ["weapon", "Waffe"], ["nonviolence", "Gewaltlosigkeit; Gewaltverzicht"], ["to discuss", "diskutieren; besprechen"], ["caste", "Kaste; Gesellschaftsklasse"],
-        ["active", "aktiv"], ["Christian", "Christ; Christin"], ["Buddhist", "Buddhist; Buddhistin"], ["Sikh", "Sikh"],
-        ["to divide (into)", "teilen (in); aufteilen (in); unterteilen (in)"], ["Pakistan", "Pakistan"], ["murder", "Mord"], ["to ridicule", "spotten; verspotten"],
-        ["dabbawala", "Dabba-Träger (Zusteller von Mittagessen in Mumbai)"], ["address", "Adresse"], ["pepper", "Paprika; Paprikaschote"], ["packaging", "Verpackung"]
+        ["none", "keine"], ["injured", "verletzt"], ["drive", "Antrieb"], ["purely", "bloß; völlig; rein"],
+        ["to covet", "begehren"], ["genuine", "echt; aufrichtig; authentisch"], ["revolution", "Revolution"], ["conviction", "Überzeugung"],
+        ["inasmuch as", "sofern; weil"], ["weapon", "Waffe"], ["ideal", "Ideal"], ["to envisage", "sich vorstellen"],
+        ["to establish", "gründen; einrichten; eröffnen"], ["nonviolence", "Gewaltlosigkeit; Gewaltverzicht"], ["engaged in sth", "tätig in etw."]
+      ] },
+    { id: "boss-u2-rc3", part: "Reading corner", title: "Gandhi (3)", pages: "p. 192–193 (biographer – packaging)", boss: "slime", bossName: "Swamp of Prejudice",
+      words: [
+        ["biographer", "Biograf; Biografin"], ["figure", "Figur; Gestalt; Persönlichkeit"], ["to discuss", "diskutieren; besprechen"], ["caste", "Kaste; Gesellschaftsklasse"],
+        ["to campaign (for)", "demonstrieren (für); sich engagieren (für); aufmerksam machen (auf)"], ["active", "aktiv"], ["Christian", "Christ; Christin"], ["Buddhist", "Buddhist; Buddhistin"],
+        ["Sikh", "Sikh"], ["to divide (into)", "teilen (in); aufteilen (in); unterteilen (in)"], ["Pakistan", "Pakistan"], ["teaching", "Lehre"],
+        ["murder", "Mord"], ["to ridicule", "spotten; verspotten"], ["dabbawala", "Dabba-Träger (Zusteller von Mittagessen in Mumbai)"], ["address", "Adresse"],
+        ["pepper", "Paprika; Paprikaschote"], ["packaging", "Verpackung"]
       ] }
   ]
 };
