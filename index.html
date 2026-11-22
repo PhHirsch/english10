@@ -79,7 +79,7 @@
 
 <script src="game.js?v=1"></script>
 <script src="bosses.js?v=1"></script>
-<!-- Vokabel-Dateien hier einbinden, z. B. <script src="vocab-u2.js?v=1"></script> -->
+<script src="vocab-u2.js?v=1"></script>
 <script>
 /* Grammatik- und Story-Spiele (id = Spiel-ID). Vokabel-Bosse kommen automatisch aus vocab-*.js */
 const GRAMMAR = [
@@ -100,7 +100,7 @@ const ACH = [
   ["🚀","Unstoppable","Play 10 different games", s => Object.keys(s.stars).length >= 10],
   ["🌟","Star collector","Collect 25 stars", s => Object.values(s.stars).reduce((a,b)=>a+b,0) >= 25],
   ["⚔️","Boss slayer","Defeat your first boss", s => Object.keys(s.stars).some(g => g.indexOf("boss-") === 0)],
-  ["👑","Boss master","Defeat all vocabulary bosses", s => BOSS_IDS.length > 0 && BOSS_IDS.every(i => s.stars[i])],
+  ["👑","Boss master","Defeat all bosses of Unit 2", s => BOSS_IDS.length > 0 && BOSS_IDS.every(i => s.stars[i])],
   ["🏠","Homework hero","Practise at home (afternoon/weekend)", s => s.stats.home],
   ["💪","Never give up","Replay a game and get more stars", s => s.stats.improved],
   ["📅","Daily player","Play 5 daily challenges", s => s.stats.daily >= 5],

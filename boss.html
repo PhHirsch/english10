@@ -57,8 +57,7 @@
 <main id="app"></main>
 <script src="game.js?v=1"></script>
 <script src="bosses.js?v=1"></script>
-<script>window.VOCAB = window.VOCAB || {};</script>
-<!-- Vokabel-Dateien hier einbinden -->
+<script src="vocab-u2.js?v=1"></script>
 <script>
 const $ = id => document.getElementById(id);
 const P = new URLSearchParams(location.search);
@@ -94,12 +93,13 @@ function variants(en) {
   const out = new Set();
   expand(en).forEach(v => {
     v = norm(v); out.add(v);
-    if (/\bsb\b/.test(v)) ["", "someone", "somebody"].forEach(r => out.add(norm(v.replace(/\bsb\b/, r))));
+    const SB = ["sb", "", "someone", "somebody"], STH = ["sth", "", "something"];
+    if (/\b(sb|sth)\b/.test(v)) SB.forEach(a => STH.forEach(b => out.add(norm(v.replace(/\bsb\b/, a).replace(/\bsth\b/, b)))));
   });
   if (en === "ad(vert)") out.add("advertisement");
   return [...out].filter(Boolean);
 }
-function mainForm(en) { return norm(en.replace(/\([^)]*\)/g, "").replace(/\bsb\b/, "")); }
+function mainForm(en) { return norm(en.replace(/\([^)]*\)/g, "").replace(/\bsb\b/, "").replace(/\bsth\b/, "")); }
 function hintOf(en) { const m = mainForm(en); return m.split("").map((c, i) => i === 0 ? c : c === " " ? "  " : c === "-" || c === "'" ? c : "_").join(""); }
 const deTokens = de => de.toLowerCase().replace(/\(.*?\)/g, "").split(/[;,/]/).map(t => t.trim()).filter(Boolean);
 function overlap(a, b) { const A = deTokens(a[1]); return deTokens(b[1]).some(t => A.indexOf(t) >= 0) || mainForm(a[0]) === mainForm(b[0]); }
