@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Final Boss · The Hirsch Games</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{--bg:radial-gradient(ellipse at 50% 0%,#3a0a0a 0%,#0c0303 70%);--panel:#1a0808;--txt:#fff2ee;--muted:#d8a8a0;--line:#4a1a14;--btn:#2a0c0a;--accent:#ff5a2a;--accentTxt:#fff;--accent2:#ffb38f;--bubble:#2a0f0c;--input:#120404;--ok:#6fe59a;--bad:#ffb03a}
+  .arena{position:relative;height:210px;overflow:hidden;border-radius:14px 14px 0 0;background:radial-gradient(ellipse at 50% 120%,#ff5a2a55,transparent 60%),linear-gradient(#1a0606,#3a0c08)}
+  .arena .boss{position:absolute;right:8%;bottom:20px;font-size:110px;line-height:1;filter:drop-shadow(0 0 20px #ff5a2a88);transition:transform .2s}
+  .arena .boss.hit{animation:hit .4s}
+  @keyframes hit{25%{transform:translateX(14px) rotate(6deg);filter:brightness(2.2)}60%{transform:translateX(-6px)}}
+  .arena .boss.rage{animation:rage 1.2s infinite}
+  @keyframes rage{50%{transform:scale(1.06);filter:drop-shadow(0 0 30px #ff2a2a)}}
+  .arena .hero{position:absolute;left:8%;bottom:20px;width:96px;height:96px;border-radius:50%;overflow:hidden;background:#fff;border:4px solid #3ab0ff;box-shadow:0 0 20px #3ab0ff88}
+  .arena .hero svg{width:100%;height:100%}
+  .hp{position:absolute;right:4%;top:12px;width:46%}
+  .hp .nm{font-weight:900;font-size:15px;letter-spacing:.05em;text-align:right}
+  .hp .b{height:16px;border-radius:9px;background:#000a;border:2px solid #ff5a2a;overflow:hidden;margin-top:3px}
+  .hp .b i{display:block;height:100%;background:linear-gradient(90deg,#ff2a2a,#ffb03a);transition:width .6s}
+  .hearts{position:absolute;left:4%;top:14px;font-size:22px}
+  .ph{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);font-weight:900;font-size:15px;color:#ffd23a;letter-spacing:.1em;text-align:center}
+  .say{position:absolute;right:30%;bottom:120px;max-width:44%;background:#fff;color:#3a0a0a;border-radius:12px;padding:6px 10px;font-size:14px;font-weight:700}
+  .say:after{content:"";position:absolute;right:-8px;bottom:10px;border:8px solid transparent;border-left-color:#fff}
+  .mini{display:grid;gap:10px;margin:14px 0}
+  .mini a{display:flex;gap:14px;align-items:center;padding:14px;border-radius:14px;background:linear-gradient(135deg,#3a0c08,#6a1a10);border:1px solid #8a2a1a;color:#fff;text-decoration:none}
+  .mini a .e{font-size:44px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script src="game.js?v=13"></script>
+<script src="juego.js?v=2"></script>
+<script src="ifhelp.js?v=1"></script>
+<script>
+const F = IFH.F;
+const BOSSES = {
+ 2: { name: "THE MONSOON", e: "⛈️", unit: "Unit 2 · Inside India", lines: ["Whoooosh! I bring the rain – and I wash away your grammar! 🌧️", "If you get this wrong, I will flood the whole city!", "Thunder and lightning! This is my last storm!"],
+   intro: "Every summer the monsoon comes to India – but this one is out of control! It only stops if you master everything from Unit 2: if clauses type I and II and the passive (simple present and simple past).",
+   stages: [
+    { label: "Phase 1", title: "The first rain", memo: "📌 Type I: if + present → will · Type II: if + past → would · Passive: is/are (present) or was/were (past) + 3rd form", tasks: [
+      { t: "choice", q: "If it ___ tomorrow, we will stay inside.", opts: ["rains", "will rain", "rained"], a: "rains", hint: "Type I: if + simple present (it → rains)." },
+      { t: "choice", q: "If I ___ in Mumbai, I would visit the Gateway of India every day.", opts: ["lived", "live", "will live"], a: "lived", hint: "would → type II → if + simple past: lived." },
+      { t: "choice", q: "The Taj Mahal ___ in the 17th century.", opts: ["was built", "is built", "built"], a: "was built", hint: "In the past → was + 3rd form." },
+      { t: "choice", q: "Every day, lunch boxes ___ to offices by dabbawalas.", opts: ["are delivered", "were delivered", "delivered"], a: "are delivered", hint: "Every day → present: are + 3rd form." },
+      { t: "choice", q: "If you volunteer in India, you ___ a lot.", opts: ["will learn", "would learn", "learn"], a: "will learn", hint: "volunteer (present) → type I → will learn." },
+      { t: "choice", q: "What would you do if you ___ a million rupees?", opts: ["had", "have", "will have"], a: "had", hint: "would → type II → if + simple past: had." }] },
+    { label: "Phase 2", title: "The flood", memo: "📌 Type I: present / will · Type II: past / would · were (I/he/she/it) · Passive: be + 3rd form (made, divided, opened …)", tasks: [
+      F(1, "If you ___ me the papers, I ___ in the form.", ["send", "fill"], ["send", "will fill|'ll fill"]),
+      F(2, "If I ___ Hindi, I ___ the film.", ["speak", "understand"], ["spoke", "would understand|'d understand"]),
+      F(2, "If the trains ___ so full, the trip ___ more fun.", ["not be", "be"], ["weren't|wasn't|were not|was not", "would be|'d be"]),
+      { t: "fill", q: "Many Indian films ___ in Mumbai every year.", v: ["make"], a: ["are made"], w: 170, check: () => "Every year → present passive: are + 3rd form (make – made – made)." },
+      { t: "fill", q: "The call centre ___ in 2010.", v: ["open"], a: ["was opened"], w: 170, check: () => "2010 → past passive: was + 3rd form." },
+      { t: "fill", q: "In 1947, the country ___ into India and Pakistan.", v: ["divide"], a: ["was divided"], w: 170, check: () => "1947 → past passive: was + 3rd form (divided)." }] },
+    { label: "Final phase", title: "The eye of the storm", memo: "📌 If-clause first → comma · never will/would in the if-clause · passive: be + 3rd form · by + person", tasks: [
+      { t: "order", task: "Put the words in the right order.", taskDe: "Wenn ich mehr Zeit hätte, würde ich in einem Waisenhaus mithelfen.", words: ["If", "I", "had", "more", "time,", "I", "would", "volunteer", "in", "an", "orphanage."], a: "If I had more time, I would volunteer in an orphanage." },
+      { t: "order", task: "Put the words in the right order.", taskDe: "Die Lunchboxen werden von den Dabbawalas geliefert.", words: ["The", "lunch", "boxes", "are", "delivered", "by", "the", "dabbawalas."], a: "The lunch boxes are delivered by the dabbawalas." },
+      { t: "order", task: "Put the words in the right order.", taskDe: "Wir werden das Taj Mahal besuchen, wenn wir nach Agra fahren.", words: ["We", "will", "visit", "the", "Taj", "Mahal", "if", "we", "go", "to", "Agra."], a: "We will visit the Taj Mahal if we go to Agra." },
+      { t: "error", words: ["If", "I", "will get", "the", "job,", "I", "will", "be", "very", "happy."], bad: 2, fix: "get", opts: ["get", "got", "would get"], hint: "No will in the if-clause: If I get the job …" },
+      { t: "error", words: ["The", "workers", "is", "paid", "fair", "wages."], bad: 2, fix: "are", opts: ["are", "was", "be"], hint: "workers = plural → are paid." },
+      { t: "error", words: ["If", "I", "had", "wings,", "I", "will", "fly", "to", "Delhi."], bad: 5, fix: "would", opts: ["would", "can", "had"], hint: "had (unreal) → type II → would fly." }] }] }
+};
+const U = +new URLSearchParams(location.search).get("u"), B = BOSSES[U];
+if (!B) {
+  const se = E8.getSession(), st = se && se.state ? se.state.stars || {} : {};
+  document.getElementById("app").innerHTML = `<div class="panel" style="max-width:720px;margin:20px auto;padding:18px"><a href="index.html" style="color:#ffb38f">← Lobby</a>
+    <h1 style="text-align:center">⚔️ Final bosses</h1><p style="text-align:center">At the end of each unit a final boss is waiting. Beat it with everything you know! <span class="de">– Am Ende jeder Unit wartet ein Endgegner. Gut zur Vorbereitung auf die Klassenarbeit.</span></p>
+    <div class="mini">${Object.entries(BOSSES).map(([k, b]) => `<a href="?u=${k}"><span class="e">${b.e}</span><span><b>${b.name}</b><br><span class="de">${b.unit}</span></span><span style="margin-left:auto;color:#ffd23a">${st["jefe-u" + k] ? "★".repeat(st["jefe-u" + k]) + "☆".repeat(3 - st["jefe-u" + k]) : "⚔️"}</span></a>`).join("")}</div></div>`;
+} else {
+  const phaseMiss = S => (S.data.pm && S.data.pm[S.stage]) || 0;
+  JUEGO.start({
+    id: "final-u" + U, key: "e10-final-u" + U, icon: B.e, topic: "Final boss · " + B.unit, title: B.name,
+    intro: `<p>${B.intro}</p><p class="de">Endgegner: 3 Phasen, immer schwerer. Jede richtige Antwort trifft den Boss. Jede falsche kostet dich ein Herz ❤️ – du kannst aber immer weiterkämpfen.</p>`,
+    goLabel: "⚔️ Fight!", time: "approx. 15 minutes", rulesLabel: "Unit 2 rules",
+    rules: IFH.RULES + `<h2>The passive</h2><div class="rule">Simple present: <b>is / are + 3rd form</b> <span class="ex">Lunch boxes are delivered every day.</span><br>Simple past: <b>was / were + 3rd form</b> <span class="ex">The Taj Mahal was built in the 17th century.</span><br>Who? → <b>by</b> + person</div>`,
+    stages: B.stages.map((s, i) => Object.assign({ go: ["⚔️ Attack!", "🔥 Harder!", "💥 Final strike!"][i], intro: `<div class="who"><div class="face">${B.e}</div><div><b class="n">${B.name}</b>${B.lines[i]}</div></div>` }, s)),
+    onMistake: S => { S.data.pm = S.data.pm || {}; S.data.pm[S.stage] = (S.data.pm[S.stage] || 0) + 1; const b = document.querySelector(".arena .boss"); if (b) b.classList.add("rage"); },
+    onSolve: S => { const b = document.querySelector(".arena .boss"); if (b) { b.classList.remove("hit"); void b.offsetWidth; b.classList.add("hit"); } const i = document.querySelector(".hp .b i"); if (i) i.style.width = Math.max(0, Math.round((1 - S.solved / S.total) * 100)) + "%"; },
+    scene: (S) => { const hp = S.done ? 0 : Math.round((1 - S.solved / S.total) * 100), h = Math.max(0, 5 - phaseMiss(S));
+      return `<div class="arena"><div class="hearts">${"❤️".repeat(h)}${"🖤".repeat(5 - h)}</div>
+        <div class="hp"><div class="nm">${B.e} ${B.name}</div><div class="b"><i style="width:${hp}%"></i></div></div>
+        <div class="ph">${S.done ? "💥 VICTORY!" : (["PHASE 1", "PHASE 2", "FINAL PHASE"][S.stage] || "")}${!S.done && h === 0 ? "<br>😵 No hearts left – keep fighting!" : ""}</div>
+        <div class="hero">${E8.myAvatar()}</div><div class="boss" style="${S.done ? "transform:rotate(90deg) translateY(30px);opacity:.5" : ""}">${S.done ? "🌤️" : B.e}</div>
+        ${S.done ? "" : `<div class="say">${B.lines[Math.min(S.stage, 2)]}</div>`}</div>`; },
+    outro: `<div style="font-size:64px">💥${B.e}🏆</div><h1>You have beaten ${B.name}!</h1><p>The sun is shining again over India. You have mastered ${B.unit}. 💪</p><p><a class="btn" href="jefe-final.html">⚔️ Other bosses</a></p>`
+  });
+}
+</script>
+</body>
+</html>

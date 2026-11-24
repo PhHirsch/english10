@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>The Map of Three Oceans · The Hirsch Games</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{--bg:radial-gradient(ellipse at 50% 0%,#0f2f4a 0%,#040d16 70%);--panel:#0a1a2a;--txt:#eef6ff;--muted:#a8c4e0;--line:#1a3a5a;--btn:#0e2438;--accent:#3ab0ff;--accentTxt:#001a2a;--accent2:#a8dcff;--bubble:#102a40;--input:#06121e;--ok:#6fe59a;--bad:#ffb03a}
+  .tv{position:relative;border-radius:14px 14px 0 0;overflow:hidden;background:linear-gradient(135deg,#0f4a6a,#06182a);padding:14px 16px;display:flex;align-items:center;gap:14px}
+  .tv .logo{font-family:Georgia,serif;font-style:italic;font-size:26px;line-height:1;color:#e8f4ff;text-shadow:0 2px 0 #0a3a6a,0 0 18px #3ab0ff}
+  .tv .logo small{display:block;font-size:13px;font-style:normal;letter-spacing:.2em;color:#a8dcff;margin-top:4px}
+  .tv .cast{margin-left:auto;display:flex;gap:6px;font-size:28px}
+  .tv .cast span{width:44px;height:44px;border-radius:50%;background:#fff1;display:grid;place-items:center;border:2px solid #3ab0ff}
+  .tv .cast span.me{overflow:hidden;background:#fff}
+  .tv .cast span.me svg{width:44px;height:44px}
+  .prog{height:6px;background:#06182a}.prog i{display:block;height:100%;background:linear-gradient(90deg,#3ab0ff,#ffd23a)}
+  .story p{margin:.45em 0;line-height:1.55}
+  .story .d{display:flex;gap:8px;align-items:flex-start;margin:.4em 0}
+  .story .d b{flex:none;min-width:62px;color:#a8dcff}
+  .story .gl{border-bottom:1px dotted #a8dcff;cursor:help}
+  .story .note{background:#fff8e6;color:#3a2a10;border-radius:4px;padding:8px 12px;font-family:"Comic Sans MS","Bradley Hand",cursive;transform:rotate(-1deg);box-shadow:0 2px 6px #0006;margin:.6em 0;display:inline-block}
+  .eps{display:grid;gap:12px;margin:14px 0}
+  .ep{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,#0a2a4a,#1a4a6a);border:1px solid #2a5a8a;border-radius:14px;padding:14px;color:#fff;text-decoration:none}
+  .ep .n{font-family:Georgia,serif;font-size:34px;font-style:italic;color:#a8dcff;width:44px;text-align:center}
+  .ep b{font-size:19px}
+  .ep.lock{filter:grayscale(.8);opacity:.55;pointer-events:none}
+  body{margin:0;min-height:100vh;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;font-size:17px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:18px}
+  .de{color:var(--muted);font-size:14px}
+  .btn{display:inline-block;padding:10px 18px;border-radius:12px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700}
+  .ep .st{margin-left:auto;font-size:18px;color:#ffd23a;white-space:nowrap}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script src="game.js?v=13"></script>
+<script src="juego.js?v=2"></script>
+<script>
+/* ======== Freischalten: Zahl erhöhen, wenn die nächste Folge erscheinen soll ======== */
+const RELEASED = 2;
+
+const g = (w, de) => `<span class="gl" title="${de}">${w}</span> <span class="de">(${de})</span>`;
+const d = (who, t) => `<div class="d"><b>${who}:</b><span>${t}</span></div>`;
+const TF = (q, a, why) => ({ t: "choice", q: q, task: "True or false?", taskDe: "Richtig oder falsch?", keep: true, noType: true, opts: ["true ✔", "false ✘"], a: a ? "true ✔" : "false ✘", hint: why });
+
+const EPS = [
+ { n: 1, unit: "Unit 1 · Canada", title: "The old suitcase", teaser: "Maya finds an old suitcase, half a compass … and a very strange map.",
+   parts: [
+   { title: "In the attic",
+     text: `<p>It's a cold Saturday in Toronto. Maya (16) and her best friend Josh are helping Maya's mum to clean the ${g("attic", "Dachboden")}. Maya's great-grandmother Grace died last year, at the age of 98, and the attic is full of her things.</p>
+       ${d("Josh", "Look at this suitcase! It's really old. There are stickers from India and New Zealand on it.")}
+       ${d("Maya", `Great-Grandma Grace travelled all over the world. She was a ${g("nurse", "Krankenschwester")} in the 1950s.`)}
+       <p>Inside the suitcase there are old photos, a red scarf and a small wooden box. In the box, Maya finds half of an old ${g("compass", "Kompass")} … and a piece of paper with a map on it. The map is ${g("torn", "zerrissen")}: only one third of it is there.</p>`,
+     tasks: [
+       { t: "choice", q: "Where does the story start?", opts: ["in Toronto", "in Mumbai", "in London"], a: "in Toronto", hint: "“It's a cold Saturday in Toronto.”" },
+       { t: "choice", q: "Who was Grace?", opts: ["Maya's great-grandmother", "Josh's sister", "Maya's teacher"], a: "Maya's great-grandmother", hint: "“Maya's great-grandmother Grace …”" },
+       TF("Grace was a nurse.", true, "“She was a nurse in the 1950s.”"),
+       { t: "choice", q: "What does Maya find in the wooden box?", opts: ["half a compass and part of a map", "a phone and a key", "money and a letter"], a: "half a compass and part of a map", hint: "“… half of an old compass … and a piece of paper with a map on it.”" }
+     ] },
+   { title: "The message",
+     text: `<p>On the back of the map, there is a message in old handwriting:</p>
+       <div class="note">To the person who finds this: I hid the three pieces of this map in three countries – here in Canada, in India and in New Zealand. If you put them together, you will find what I lost in 1956. – G.</div>
+       ${d("Josh", "Wow! A real treasure hunt!")}
+       ${d("Maya", "But what did she lose? And where are the other two pieces?")}
+       <p>Maya's mum looks at the map. She is surprised. ${d("Mum", "Grace always said: “The most important thing I ever lost is in Mumbai.” I never understood it.")}</p>
+       <p>Then Maya sees a small ${g("stamp", "Stempel")} on the map: <b>“SpiceRoute Mumbai”</b>.</p>`,
+     tasks: [
+       { t: "choice", q: "In how many countries are the pieces of the map?", opts: ["three", "two", "four"], a: "three", hint: "“… in three countries – here in Canada, in India and in New Zealand.”" },
+       TF("Grace lost something in 1956.", true, "“… what I lost in 1956.”"),
+       { t: "choice", q: "What did Grace often say?", opts: ["The most important thing she lost is in Mumbai.", "She hated travelling.", "She wanted to live in New Zealand."], a: "The most important thing she lost is in Mumbai.", hint: "“The most important thing I ever lost is in Mumbai.”" },
+       { t: "choice", q: "What is written on the stamp?", opts: ["SpiceRoute Mumbai", "Toronto 1956", "New Zealand News"], a: "SpiceRoute Mumbai", hint: "“… a small stamp on the map: SpiceRoute Mumbai.”" }
+     ] }],
+   end: "What did Grace lose in Mumbai? And what is SpiceRoute? 🧭 – To be continued …" },
+ { n: 2, unit: "Unit 2 · India", title: "The wrong lunch box", teaser: "Maya volunteers in Mumbai. A dabbawala makes a mistake … or does he?",
+   parts: [
+   { title: "Hello, Mumbai!",
+     text: `<p>Six months later, Maya is in Mumbai. She is doing a two-week ${g("internship", "Praktikum")} at <b>SpiceRoute Logistics</b> – the same company as on the stamp! Her manager is Priya.</p>
+       ${d("Priya", "Welcome, Maya! Your stay here will be busy. If you have questions, just ask me.")}
+       ${d("Maya", "Thank you! Priya … is SpiceRoute very old?")}
+       ${d("Priya", "Our company was founded in 1998. But the building is much older. It was a hospital in the 1950s.")}
+       <p>Maya is ${g("blown away", "überwältigt")}. A hospital? Great-Grandma Grace was a nurse – in the 1950s!</p>`,
+     tasks: [
+       { t: "choice", q: "Why is Maya in Mumbai?", opts: ["She is doing an internship.", "She is on holiday with her family.", "She is visiting Josh."], a: "She is doing an internship.", hint: "“She is doing a two-week internship at SpiceRoute Logistics.”" },
+       TF("SpiceRoute was founded in the 1950s.", false, "“Our company was founded in 1998.”"),
+       { t: "choice", q: "What was the building in the 1950s?", opts: ["a hospital", "a school", "a tea shop"], a: "a hospital", hint: "“It was a hospital in the 1950s.”" },
+       { t: "choice", q: "Why is Maya so surprised?", opts: ["Grace was a nurse in the 1950s.", "She doesn't like hospitals.", "Priya knows Grace."], a: "Grace was a nurse in the 1950s.", hint: "“Great-Grandma Grace was a nurse – in the 1950s!”" }
+     ] },
+   { title: "The lunch box",
+     text: `<p>At noon, a ${g("dabbawala", "Lunchbox-Lieferant")} comes into the office with a metal lunch box. He gives it to Maya.</p>
+       ${d("Maya", "Sorry, I think this is a mistake. I didn't order any lunch.")}
+       ${d("Dabbawala", "No mistake, madam. My grandfather gave me this box many years ago. He said: “One day a girl from Canada will come to this building. Give it to her.”")}
+       <p>Maya opens the lunch box. There is no food in it – only a ${g("folded", "gefaltet")} piece of paper. It's the <b>second piece of the map</b>! And on it, in Grace's handwriting:</p>
+       <div class="note">You have found the second piece. The last piece is waiting where the earth shakes. – G.</div>
+       ${d("Maya", "Where the earth shakes …? 😳")}`,
+     tasks: [
+       { t: "choice", q: "What does the dabbawala bring?", opts: ["a metal lunch box", "a letter from Josh", "a cup of chai"], a: "a metal lunch box", hint: "“… comes into the office with a metal lunch box.”" },
+       TF("Maya ordered lunch.", false, "“I didn't order any lunch.”"),
+       { t: "choice", q: "Who gave the box to the dabbawala?", opts: ["his grandfather", "Priya", "Maya's mum"], a: "his grandfather", hint: "“My grandfather gave me this box many years ago.”" },
+       { t: "choice", q: "What is in the lunch box?", opts: ["the second piece of the map", "rice and curry", "the compass"], a: "the second piece of the map", hint: "“It's the second piece of the map!”" },
+       { t: "order", task: "Put the words in the right order.", taskDe: "Das letzte Stück wartet dort, wo die Erde bebt.", words: ["The", "last", "piece", "is", "waiting", "where", "the", "earth", "shakes."], a: "The last piece is waiting where the earth shakes." }
+     ] }],
+   end: "Where does the earth shake? And who was the dabbawala's grandfather? 🌏 – To be continued …" }
+];
+
+const q = new URLSearchParams(location.search), EP = EPS.find(e => e.n === +q.get("ep"));
+if (!EP || EP.n > RELEASED) {
+  const se = E8.getSession(), st = se && se.state ? se.state.stars || {} : {};
+  document.getElementById("app").innerHTML = `<div class="panel" style="max-width:720px;margin:20px auto;padding:18px">
+    <a href="index.html" style="color:#a8dcff">← Lobby</a>
+    <div class="tv" style="margin-top:10px;border-radius:14px"><div class="logo">The Map of<br>Three Oceans<small>A SERIES IN EPISODES</small></div><div class="cast"><span>👧🏼</span><span>👦🏾</span><span>👵🏻</span><span>🧭</span></div></div>
+    <p>Maya from Toronto finds a torn map from her great-grandmother. Three pieces, three countries – and a secret. Read each episode and answer the questions. A new episode comes when your teacher releases it!</p>
+    <p class="de">Lies jede Folge und beantworte die Fragen. Neue Folgen schaltet deine Lehrkraft frei – bleib dran!</p>
+    <div class="eps">${EPS.map(e => { const lock = e.n > RELEASED, s = st["tele-" + e.n] || 0;
+      return `<a class="ep ${lock ? "lock" : ""}" href="?ep=${e.n}"><span class="n">${e.n}</span><span><b>${lock ? "🔒 " : ""}${e.title}</b><br><span class="de">${e.unit} · ${lock ? "Coming soon – bald" : e.teaser}</span></span><span class="st">${lock ? "" : s ? "★".repeat(s) + "☆".repeat(3 - s) : "NEW"}</span></a>`; }).join("")}
+      <div class="ep lock"><span class="n">3</span><span><b>🔒 Episode 3</b><br><span class="de">Unit 3 · New Zealand – to be continued …</span></span></div></div></div>`;
+} else {
+  JUEGO.start({
+    noHard: true, id: "tele-" + EP.n, key: "e10-tele-" + EP.n, icon: "🧭", topic: "Series · Episode " + EP.n, title: EP.title,
+    intro: `<p><b>Episode ${EP.n}</b> · ${EP.teaser}</p><p class="de">Lies den Text genau – er bleibt bei den Fragen sichtbar. Schwierige Wörter haben eine Übersetzung in Klammern.</p>`,
+    goLabel: "▶ Start the episode", time: "approx. 10 minutes",
+    stages: EP.parts.map((p, i) => ({ label: "Part " + (i + 1), title: p.title, go: "📖 Read",
+      intro: `<div class="story">${p.text}</div><p class="de">Lies den Text. Danach kommen Fragen – der Text bleibt oben sichtbar.</p>`,
+      memo: `<div class="story">${p.text}</div>`, pista: "Such die Antwort im Text oben – die Wörter aus der Frage stehen meistens auch im Text.", tasks: p.tasks })),
+    scene: (S) => `<div class="tv"><div class="logo">The Map of<br>Three Oceans<small>EPISODE ${EP.n}</small></div><div class="cast"><span>👧🏼</span>${EP.n > 1 ? "<span>👩🏽‍💼</span>" : "<span>👦🏾</span>"}<span>🧭</span><span class="me">${E8.myAvatar()}</span></div></div>
+      <div class="prog"><i style="width:${S.done ? 100 : Math.round(S.solved / S.total * 100)}%"></i></div>`,
+    outro: `<div style="font-size:56px">🧭🗺️</div><h1>End of episode ${EP.n}</h1><p style="font-size:20px">${EP.end}</p>
+      <p class="de">${EP.n < RELEASED ? "Die nächste Folge ist schon da!" : "Die nächste Folge schaltet deine Lehrkraft bald frei."}</p><p><a class="btn" href="series.html">📺 All episodes</a></p>`
+  });
+}
+</script>
+</body>
+</html>

@@ -1058,5 +1058,119 @@
 "price": 1200,
 "kind": "aurora",
 "lvl": 7
+},
+{
+"id": "top-school-hx",
+"slot": "top",
+"name": "Sekundarschule Höxter hoodie",
+"price": 150,
+"kind": "hoodie",
+"color": "#1d3a6e",
+"text": "SEK HX"
+},
+{
+"id": "top-class-shirt",
+"slot": "top",
+"name": "Class of 2027 shirt",
+"price": 120,
+"kind": "classshirt",
+"color": "#1d1d22"
+},
+{
+"id": "top-class-hoodie",
+"slot": "top",
+"name": "Class of 2027 hoodie",
+"price": 180,
+"kind": "classhoodie",
+"color": "#2a2b30"
+},
+{
+"id": "top-prom-suit",
+"slot": "top",
+"name": "Prom suit",
+"price": 300,
+"kind": "gala",
+"color": "#1d1d22",
+"lvl": 3
+},
+{
+"id": "top-prom-dress",
+"slot": "top",
+"name": "Prom dress",
+"price": 300,
+"kind": "dress",
+"color": "#1c2a6b",
+"lvl": 3
+},
+{
+"id": "top-prom-dress-gold",
+"slot": "top",
+"name": "Golden prom dress ✨",
+"price": 450,
+"kind": "dress",
+"color": "#d4a93a",
+"lvl": 5
+},
+{
+"id": "top-grad-gown",
+"slot": "top",
+"name": "Graduation gown",
+"price": 350,
+"kind": "toga",
+"color": "#20243a",
+"lvl": 4
+},
+{
+"id": "hat-grad-cap",
+"slot": "hat",
+"name": "Graduation cap",
+"price": 250,
+"kind": "gradcap",
+"color": "#20243a",
+"lvl": 4
+},
+{
+"id": "top-hockey",
+"slot": "top",
+"name": "Ice hockey jersey 🏒",
+"price": 200,
+"kind": "hockey",
+"color": "#c8102e",
+"unit": 1
+},
+{
+"id": "top-kurta",
+"slot": "top",
+"name": "Kurta",
+"price": 250,
+"kind": "kurta",
+"color": "#2a7a6a",
+"unit": 2
+},
+{
+"id": "top-fern",
+"slot": "top",
+"name": "Silver fern shirt",
+"price": 200,
+"kind": "fern",
+"color": "#16161a",
+"unit": 3
+},
+{
+"id": "hat-cracker-crown",
+"slot": "hat",
+"name": "Christmas cracker crown 🎉",
+"price": 50,
+"kind": "papercrown",
+"color": "#e8433a",
+"adv": 10
+},
+{
+"id": "ex-robin",
+"slot": "extra",
+"name": "Robin 🐦",
+"price": 80,
+"kind": "robin",
+"adv": 20
 }
 ]

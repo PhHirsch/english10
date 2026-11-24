@@ -127,5 +127,19 @@ for c in C:
     if c["id"] in ("bg-gold",): c["lvl"]=5
     if c["id"] in ("bg-galaxy",): c["lvl"]=8
     if c["id"] in ("hc-rainbow",): c["lvl"]=4
+# ===== english10: Schule, Abschluss, Units (Orange Line 6), Adventskalender =====
+add("top-school-hx","top","Sekundarschule Höxter hoodie",150,kind="hoodie",color="#1d3a6e",text="SEK HX")
+add("top-class-shirt","top","Class of 2027 shirt",120,kind="classshirt",color="#1d1d22")
+add("top-class-hoodie","top","Class of 2027 hoodie",180,kind="classhoodie",color="#2a2b30")
+add("top-prom-suit","top","Prom suit",300,kind="gala",color="#1d1d22",lvl=3)
+add("top-prom-dress","top","Prom dress",300,kind="dress",color="#1c2a6b",lvl=3)
+add("top-prom-dress-gold","top","Golden prom dress ✨",450,kind="dress",color="#d4a93a",lvl=5)
+add("top-grad-gown","top","Graduation gown",350,kind="toga",color="#20243a",lvl=4)
+add("hat-grad-cap","hat","Graduation cap",250,kind="gradcap",color="#20243a",lvl=4)
+add("top-hockey","top","Ice hockey jersey 🏒",200,kind="hockey",color="#c8102e",unit=1)
+add("top-kurta","top","Kurta",250,kind="kurta",color="#2a7a6a",unit=2)
+add("top-fern","top","Silver fern shirt",200,kind="fern",color="#16161a",unit=3)
+add("hat-cracker-crown","hat","Christmas cracker crown 🎉",50,kind="papercrown",color="#e8433a",adv=10)
+add("ex-robin","extra","Robin 🐦",80,kind="robin",adv=20)
 json.dump(C,open("catalog.json","w"),ensure_ascii=False,indent=0)
 print(len(C), sum(c["price"] for c in C))

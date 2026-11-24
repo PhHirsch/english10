@@ -21,7 +21,7 @@ window.BOSSART = (function () {
     <ellipse cx="78" cy="84" rx="12" ry="16" fill="#2a2f4a"/><ellipse cx="122" cy="84" rx="12" ry="16" fill="#2a2f4a"/><circle cx="82" cy="78" r="4" fill="#fff"/><circle cx="126" cy="78" r="4" fill="#fff"/>
     <path d="M70 66 L88 72 M130 66 L112 72" stroke="#2a2f4a" stroke-width="4" stroke-linecap="round"/><path d="M84 128 Q100 116 116 128" stroke="#2a2f4a" stroke-width="5" fill="none" stroke-linecap="round"/>
     <path d="M70 100 Q66 112 70 116 Q74 112 70 100 Z" fill="#7ac8ff"><animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/></path>
-    <rect x="128" y="130" width="40" height="30" rx="5" fill="#a8743f" stroke="#6a4a26" stroke-width="3"/><rect x="140" y="122" width="16" height="10" rx="3" fill="none" stroke="#6a4a26" stroke-width="3"/><text x="148" y="150" font-family="Arial" font-size="9" text-anchor="middle" fill="#fff">USA</text>
+    <rect x="128" y="130" width="40" height="30" rx="5" fill="#a8743f" stroke="#6a4a26" stroke-width="3"/><rect x="140" y="122" width="16" height="10" rx="3" fill="none" stroke="#6a4a26" stroke-width="3"/><text x="148" y="150" font-family="Arial" font-size="9" text-anchor="middle" fill="#fff">TRIP</text>
     <animateTransform attributeName="transform" type="translate" values="0 0;0 -8;0 0" dur="2.4s" repeatCount="indefinite"/></g></svg>`;
   A.bossy = `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
     <ellipse cx="100" cy="118" rx="70" ry="66" fill="#e0533a" stroke="#8a2a1a" stroke-width="4"/><ellipse cx="100" cy="140" rx="44" ry="34" fill="#f08a6a"/>

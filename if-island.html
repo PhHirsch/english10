@@ -5,142 +5,112 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Stranded · The Hirsch Games</title>
 <link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="ifkit.css?v=1">
 <style>
-  :root{--bg:#062a33;--head:rgba(4,32,40,.92);--panel:linear-gradient(180deg,#0f4552,#0a3440);--box:#08303a;--line:#2a6b78;--txt:#effaf8;--muted:#9fcfcc;
-    --acc:#ffc94a;--accTxt:#2a1e00;--ok:#7dffb0;--bad:#ff7a6b;--paper:#f4e7c6;--paperTxt:#3a2c18}
-  body{background:linear-gradient(180deg,#0b5566 0%,#062a33 55%,#0b2a2a 100%)}
-  .meter{min-width:90px}
+  :root{--bg:radial-gradient(ellipse at 50% 0%,#0b5566 0%,#062a33 70%);--panel:#0a3440;--txt:#effaf8;--muted:#9fcfcc;--line:#2a6b78;--btn:#0d3f4c;--accent:#ffc94a;--accentTxt:#2a1e00;--accent2:#ffe3a0;--bubble:#0f4552;--input:#052029;--ok:#7dffb0;--bad:#ffb03a}
+  .sea{position:relative;height:180px;overflow:hidden;border-radius:14px 14px 0 0;background:linear-gradient(#8fd8ff 0%,#c8eeff 55%,#2aa6c8 56%,#147a9a 100%)}
+  .sea.night{background:linear-gradient(#0a1030 0%,#1a2050 55%,#0a3a5a 56%,#062a3a 100%)}
+  .sun{position:absolute;left:30px;top:18px;width:46px;height:46px;border-radius:50%;background:#ffe25a;box-shadow:0 0 30px #ffe25a}
+  .night .sun{background:#f4f1d0;box-shadow:0 0 20px #f4f1d0;width:34px;height:34px}
+  .isl{position:absolute;left:50%;bottom:20px;width:260px;height:62px;margin-left:-130px;border-radius:50% 50% 40% 40%;background:#f3d58a}
+  .palm{position:absolute;bottom:60px;font-size:56px}
+  .me{position:absolute;bottom:62px;left:calc(50% - 50px);width:40px;height:40px;border-radius:50%;overflow:hidden;border:3px solid #ffc94a;background:#fff}
+  .sam{position:absolute;bottom:60px;left:calc(50% + 6px);font-size:36px}
+  .camp{position:absolute;bottom:60px;left:calc(50% + 50px);font-size:34px}
+  .plane{position:absolute;top:24px;font-size:38px;animation:fly 6s linear infinite}
+  @keyframes fly{from{left:110%}to{left:-15%}}
+  .hud{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font-size:14px;background:#052029;border-top:1px solid #2a6b78;flex-wrap:wrap}
+  .m{display:flex;align-items:center;gap:5px}.m .b{width:80px;height:11px;border-radius:6px;background:#000;overflow:hidden}.m .b i{display:block;height:100%}
+  .read{background:#f4e7c6;color:#3a2c18;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:19px;line-height:1.6}
+  .read .h{font-size:13px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
 </style>
 </head>
 <body>
 <main id="app"></main>
-<script src="game.js?v=10"></script>
-<script src="ifkit.js?v=1"></script>
+<script src="game.js?v=13"></script>
+<script src="juego.js?v=2"></script>
+<script src="ifhelp.js?v=1"></script>
 <script>
-const STAGES = [
- { tag:"Day 1 · Morning", icon:"🏝️", title:"Arrival", type:"quiz",
-   npc:"We made it to the beach! OK … no boat, no radio, and our phones are dead. Let's think. Listen to what I'm saying – some things are possible, some are just dreams.",
-   read:`<div class="h">Sam says …</div>If we <u>find</u> fresh water, we <u>will survive</u>.<br>If we <u>had</u> a phone, we <u>would call</u> for help.<br>If it <u>rains</u> tonight, we <u>will collect</u> the water.<br>If we <u>were</u> at home now, we <u>would eat</u> pizza.`,
-   task:"Read Sam's sentences and answer the questions.", taskDe:"Lies Sams Sätze und beantworte die Fragen.",
-   items:[
-     {q:"Do Sam and you have a phone that works?", o:["No – so “If we had a phone …” is a dream (unreal).","Yes."], why:"They have no phone → the situation is <b>unreal</b>. <span class='de'>Unwirklich.</span>"},
-     {q:"Can they maybe find water on the island?", o:["Yes – that's possible, so: “If we find water, we will …”","No, never."], why:"Finding water is <b>possible</b>. <span class='de'>Möglich.</span>"},
-     {q:"Possible situations (<b>type I</b>): which tense is in the if-clause? (<i>If we find … · If it rains …</i>)", o:["simple present","simple past"], why:"Type I: if + simple present."},
-     {q:"Type I: what is in the main clause? (<i>we will survive</i>)", o:["will + infinitive","would + infinitive"], why:"Type I: will + infinitive."},
-     {q:"Unreal situations (<b>type II</b>): which tense is in the if-clause? (<i>If we had … · If we were …</i>)", o:["simple past","simple present"], why:"Type II: if + simple past."},
-     {q:"Type II: what is in the main clause? (<i>we would call</i>)", o:["would + infinitive","will + infinitive"], why:"Type II: would + infinitive."},
-     {q:"<i>If we were at home now …</i> – is this about the past?", o:["No – it's about now. The past form only shows it's not real.","Yes – it's about yesterday."], why:"Past form = unreal, not past time! <span class='de'>Vergangenheitsform = unwirklich.</span>"}
-   ],
-   doneTitle:"YOU'VE GOT A PLAN", doneText:"OK, now we know how to talk about plans and dreams! Look at the rule card. Then let's collect ideas.", rulesAfter:2 },
+const F = IFH.F, SAM = {face:"🧑🏽", name:"Sam"};
+const SAYS = `<div class="read"><div class="h">Sam says …</div>If we <u>find</u> fresh water, we <u>will survive</u>.<br>If we <u>had</u> a phone, we <u>would call</u> for help.<br>If it <u>rains</u> tonight, we <u>will collect</u> the water.<br>If we <u>were</u> at home now, we <u>would eat</u> pizza.</div>`;
+const Q = (q, opts, why, extra) => Object.assign({ t: "choice", who: SAM, q: q, opts: opts, a: opts[0], after: why, hint: "Look at Sam's sentences again. – Schau dir Sams Sätze noch einmal an." }, extra || {});
+const SIT = (sit, ok, no, why, hint) => ({ t: "choice", noType: true, task: "Choose the sentence that fits the situation.", taskDe: "Möglich (Typ I) oder unwirklich (Typ II)?", q: `<span class="small">SITUATION:</span> ${sit}`, opts: [ok, no], a: ok, after: why, hint: hint });
+const ER = (words, bad, fix, opts, hint) => ({ t: "error", task: "Tap the wrong word and correct it.", taskDe: "Tippe das falsche Wort an und verbessere es.", words: words, bad: bad, fix: fix, opts: opts, hint: hint });
+const RES = [["💧", "water"], ["🍌", "food"], ["⚡", "energy"]];
 
- { tag:"Day 1 · Afternoon", icon:"💡", title:"Ideas on the beach", type:"sort",
-   npc:"I've got lots of ideas! But some of them are real plans, and some are just dreams. Help me sort them.",
-   bins:["📋 Real plan (possible)","💭 Just a dream (unreal)"],
-   hint:"Look at the verbs! simple present + will → possible plan · simple past + would → dream. <span class='de'>Achte auf die Verbformen.</span>",
-   task:"Is it a real plan or just a dream? Look at the verb forms.", taskDe:"Echter Plan (Typ I) oder Traum (Typ II)? Tippe auf den passenden Korb.",
-   items:[
-     {s:"If we build a hut, we will stay dry.", b:0},
-     {s:"If we had a helicopter, we would fly home.", b:1},
-     {s:"If we find coconuts, we will have food.", b:0},
-     {s:"If I were a fish, I would swim to the mainland.", b:1},
-     {s:"If we make a fire, the rescue plane will see the smoke.", b:0},
-     {s:"If the sailing school knew where we are, they would come at once.", b:1},
-     {s:"If the sun shines, our clothes will dry quickly.", b:0},
-     {s:"If we lived here, we would build a big house.", b:1}
-   ],
-   doneTitle:"IDEAS SORTED", doneText:"Great, now we know what to do. Let's start working – we need a camp before it gets dark!" },
-
- { tag:"Day 2", icon:"🛖", title:"Building a camp", type:"type", ty:1,
-   npc:"We're making real plans now – these things can really happen. So we need type I!",
-   task:"Write the correct form of the verbs in brackets.", taskDe:"Typ I: if-Satz simple present, Hauptsatz will + Grundform. Kurzformen (won't, doesn't …) sind erlaubt.",
-   items:[
-     {t:"If we {0} wood now, we {1} a fire tonight.", v:["collect","have"], a:["collect","will have"]},
-     {t:"If the fire {0}, we {1} cold.", v:["not burn","be"], a:["doesn't burn|does not burn","will be"]},
-     {t:"If I {0} that palm tree, I {1} some coconuts.", v:["climb","get"], a:["climb","will get"]},
-     {t:"If it {0} tonight, the hut {1} us dry.", v:["rain","keep"], a:["rains","will keep"]},
-     {t:"We {0} lost if we {1} near the beach.", v:["not get","stay"], a:["won't get|will not get","stay"]}
-   ],
-   doneTitle:"CAMP READY", doneText:"Look at our hut! And the fire is burning. Let's sit down and dream a little …", doneIcon:"🔥" },
-
- { tag:"Day 2 · Night", icon:"🔥", title:"Campfire dreams", type:"type", ty:2,
-   npc:"It's dark now. Let's talk about things we don't have and places where we aren't – just dreams. So that's type II!",
-   task:"Write the correct form of the verbs in brackets.", taskDe:"Typ II: if-Satz simple past, Hauptsatz would + Grundform.",
-   items:[
-     {t:"If we {0} marshmallows, we {1} them over the fire.", v:["have","roast"], a:["had","would roast"]},
-     {t:"Sam: “If I {0} at home now, I {1} in my warm bed.”", v:["be","sleep"], a:["were|was","would sleep"]},
-     {t:"If my parents {0} us now, they {1} it!", v:["see","not believe"], a:["saw","wouldn't believe|would not believe"]},
-     {t:"I {0} scared if Sam {1} here with me.", v:["be","not be"], a:["would be","weren't|wasn't|were not|was not"]},
-     {t:"If you {0} have one thing from home, what {1}?", v:["can","you / take"], a:["could","would you take"]}
-   ],
-   doneTitle:"GOOD NIGHT", doneText:"Sleep well. Tomorrow morning we have to decide a lot of things.", doneIcon:"🌙" },
-
- { tag:"Day 3", icon:"🧭", title:"Real or dream?", type:"choose",
-   npc:"Here's the situation this morning. Every time, you have to decide: Is it possible – or not real at all?",
-   task:"Read the situation. Choose the sentence that fits.", taskDe:"Ist es möglich (Typ I) oder unwirklich (Typ II)? Wähle den passenden Satz.",
-   items:[
-     {sit:"Sam has a small mirror in his bag.", o:["If a plane comes, we will use the mirror to send a signal.","If a plane came, we would use the mirror to send a signal."], why:"Sam really has a mirror and a plane may come → type I.", no:"Sam really <b>has</b> a mirror – it's possible. <span class='de'>Möglich → Typ I.</span>"},
-     {sit:"You don't have a boat.", o:["If we had a boat, we would sail home.","If we have a boat, we will sail home."], why:"No boat → unreal → type II.", no:"You <b>don't</b> have a boat. <span class='de'>Unwirklich → Typ II.</span>"},
-     {sit:"Maybe it will be sunny tomorrow.", o:["If it is sunny tomorrow, the plane will see our smoke.","If it was sunny tomorrow, the plane would see our smoke."], why:"Maybe → possible → type I.", no:"<b>Maybe</b> = it's possible. <span class='de'>Möglich → Typ I.</span>"},
-     {sit:"Sam can't swim very well.", o:["If Sam could swim better, we would try to reach the next island.","If Sam can swim better, we will try to reach the next island."], why:"He can't → unreal → type II.", no:"Sam <b>can't</b> swim well. <span class='de'>Unwirklich → Typ II.</span>"},
-     {sit:"There are fish in the lagoon.", o:["If we catch a fish, we will cook it on the fire.","If we caught a fish, we would cook it on the fire."], why:"Catching a fish is possible → type I.", no:"There <b>are</b> fish – you can catch one! <span class='de'>Möglich → Typ I.</span>"}
-   ],
-   doneTitle:"DECISIONS MADE", doneText:"Good thinking! Now let's send a message. I've got an empty bottle and some paper." },
-
- { tag:"Day 4", icon:"🍾", title:"Message in a bottle", type:"order",
-   npc:"Let's write three sentences on the paper and throw the bottle into the sea. Every word must be right!",
-   task:"Put the words in the right order.", taskDe:"Tippe die Wörter in der richtigen Reihenfolge an. Nochmal tippen = zurücklegen. Achte auf das Komma!",
-   items:[
-     ["If","you","find","this","bottle",",","you","will","save","two","lives","."],
-     ["We","would","be","very","happy","if","you","came","quickly","."],
-     ["If","the","weather","stays","good",",","we","will","wait","on","the","beach","."]
-   ],
-   doneTitle:"BOTTLE THROWN", doneText:"There it goes! … Wait – can you hear that? An engine! It's a plane! Quick – let's check my diary before they land, I want it to be perfect.", nextLabel:"Look at Sam's diary →", doneIcon:"✈️" },
-
- { tag:"Day 4 · Rescue", icon:"🛩️", title:"Sam's diary", type:"spot",
-   npc:"I wrote everything in my diary. But I think I made three mistakes. Can you find them?",
-   task:"Tap the three wrong sentences. Then press CHECK.", taskDe:"Tippe die drei falschen Sätze an und drücke dann auf CHECK.", finalLabel:"✈️ Get on the plane",
-   items:[
-     {s:"If we had a radio, we would call the coast guard.", wrong:false},
-     {s:"If the plane will see the smoke, it will land.", wrong:true, fix:"If the plane sees the smoke, it will land."},
-     {s:"If I were a bird, I will fly home.", wrong:true, fix:"If I were a bird, I would fly home."},
-     {s:"We will be home tomorrow if they find us today.", wrong:false},
-     {s:"If it rained tonight, we will collect water.", wrong:true, fix:"If it rains tonight, we will collect water."},
-     {s:"I would be bored if Sam weren't here.", wrong:false}
-   ],
-   doneTitle:"", doneText:"" }
-];
-
-const RES = [["💧","water"],["🍌","food"],["⚡","energy"]];
-IFK({
-  id:"if-island", key:"ifIsland", title:"Stranded",
-  npcIcon:"🧑🏽", npcName:"Sam",
-  stages: STAGES,
-  init: () => ({ water: 100, food: 100, energy: 100, rot: 0 }),
-  onMistake: S => { const k = RES[S.rot % 3][1]; S[k] = Math.max(5, S[k] - 5); S.rot++; },
-  hud: S => RES.map(([ic, k]) => { const v = S[k], c = v > 60 ? "var(--ok)" : v > 30 ? "var(--acc)" : "var(--bad)";
-    return `<div class="meter">${ic}<div class="bar"><i style="width:${v}%;background:${c}"></i></div></div>`; }).join(""),
-  rules: () => `<span class="tag">Survival guide</span><h2>If clauses</h2>
-    <div class="rule"><b>Type I – real plan / possible</b> <span class="de">(kann wirklich passieren)</span><br>
-      if-clause: <b>simple present</b> &nbsp;|&nbsp; main clause: <b>will / won't + verb</b><br>
-      <span class="ex">If we <u>find</u> water, we <u>will survive</u>.</span></div>
-    <div class="rule"><b>Type II – dream / unreal</b> <span class="de">(unwirklich, nur vorgestellt)</span><br>
-      if-clause: <b>simple past</b> &nbsp;|&nbsp; main clause: <b>would / wouldn't + verb</b><br>
-      <span class="ex">If we <u>had</u> a phone, we <u>would call</u> for help.</span><br>
-      ⚠️ The past form does <b>not</b> mean past time! · If I / he / she / it <b>were</b> … (also: was) · can → <b>could</b></div>
-    <div class="rule">⚠️ <b>Never will or would in the if-clause!</b><br><span class="ex">✗ If it will rain … ✓ If it rains … · ✗ If I would have … ✓ If I had …</span></div>
-    <div class="rule">If-clause first → <b>comma</b>. If-clause second → no comma.<br><span class="ex">If it rains, we will stay in the hut. · We will stay in the hut if it rains.</span></div>
-    <p class="de">Typ I: möglich – simple present + will. Typ II: unwirklich – simple past + would. Nie will/would im if-Satz.</p>`,
-  startLabel:"⛵ Set sail",
-  startHTML:`<span class="tag">Sailing trip · Scotland</span><h1>Stranded</h1>
-    <p>You and your friend <b>Sam</b> are on a sailing course on the west coast of Scotland. You are sailing a small boat with the group – but suddenly there is a storm. The wind pushes your boat far away from the others. The next morning, the boat is broken and you land on a <b>tiny island</b>.</p>
+JUEGO.start({
+  id: "if-island", key: "e10-if-island", icon: "🏝️", topic: "If clauses (type I + II)", title: "Stranded",
+  intro: `<p>You and your friend <b>Sam</b> are on a sailing course on the west coast of Scotland. You are sailing a small boat with the group – but suddenly there is a storm. The wind pushes your boat far away from the others. The next morning, the boat is broken and you land on a <b>tiny island</b>.</p>
     <p>The sailing school is looking for you. Stay alive and help the rescue team find you!</p>
     <p class="de">Du kommst nur weiter, wenn alles richtig ist. Jeder Fehler kostet Wasser 💧, Essen 🍌 oder Energie ⚡. Falsche Aufgaben kommen noch einmal.</p>`,
-  finishHTML: (S, name) => { const avg = Math.round((S.water + S.food + S.energy) / 3);
-    return `<div class="big">🛩️🏝️</div><span class="tag">Rescued!</span><h1>You're safe, ${name}!</h1>
-    <p>A seaplane of the coast guard lands in the lagoon. The pilot smiles: “We saw your smoke from far away! If you go sailing again, take a waterproof phone!”</p>
-    <p style="font-size:22px">💧 ${S.water} % · 🍌 ${S.food} % · ⚡ ${S.energy} %</p>
-    <p style="font-size:22px">Rank: <b>${avg >= 80 ? "Survival Expert 🏆" : avg >= 55 ? "Island Explorer 🥈" : "Beach Beginner 🥉"}</b></p>`; }
+  goLabel: "⛵ Set sail", time: "approx. 20 minutes", rulesLabel: "Survival guide",
+  get rules() { const S = JUEGO.S; return !S || S.stage < 1 ? `<h2>📘 Rules</h2><p>You will discover the rules yourself on day 1! <span class="de">Die Regeln findest du gleich selbst heraus.</span></p>` : IFH.RULES; },
+  stages: [
+    { label: "Day 1 · Morning", title: "🏝️ Arrival", go: "Listen to Sam →",
+      intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>We made it to the beach! OK … no boat, no radio, and our phones are dead. Let's think. Listen to what I'm saying – some things are possible, some are just dreams.</div></div>`,
+      memo: SAYS, pista: "Schau dir die unterstrichenen Verben in Sams Sätzen an.", tasks: [
+      Q("Do Sam and you have a phone that works?", ["No – so “If we had a phone …” is a dream (unreal).", "Yes."], "They have no phone → the situation is <b>unreal</b>. – Unwirklich.", { noType: true }),
+      Q("Can they maybe find water on the island?", ["Yes – that's possible, so: “If we find water, we will …”", "No, never."], "Finding water is <b>possible</b>. – Möglich.", { noType: true }),
+      Q("Possible situations (<b>type I</b>): which tense is in the if-clause? (<i>If we find … · If it rains …</i>)", ["simple present", "simple past"], "Type I: if + simple present."),
+      Q("Type I: what is in the main clause? (<i>we will survive</i>)", ["will + infinitive", "would + infinitive"], "Type I: will + infinitive."),
+      Q("Unreal situations (<b>type II</b>): which tense is in the if-clause? (<i>If we had … · If we were …</i>)", ["simple past", "simple present"], "Type II: if + simple past."),
+      Q("Type II: what is in the main clause? (<i>we would call</i>)", ["would + infinitive", "will + infinitive"], "Type II: would + infinitive."),
+      Q("<i>If we were at home now …</i> – is this about the past?", ["No – it's about now. The past form only shows it's not real.", "Yes – it's about yesterday."], "Past form = unreal, not past time! – Vergangenheitsform = unwirklich.", { noType: true })] },
+    { label: "Day 1 · Afternoon", title: "💡 Ideas on the beach",
+      intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>I've got lots of ideas! But some of them are real plans, and some are just dreams. Help me sort them.</div></div>`,
+      memo: "📌 Type I (simple present + will) = possible plan · Type II (simple past + would) = dream", tasks: [
+      { t: "sort", task: "Real plan or just a dream? Look at the verb forms.", taskDe: "Echter Plan (Typ I) oder Traum (Typ II)?", buckets: ["📋 Real plan (possible)", "💭 Just a dream (unreal)"],
+        why: ["Look at the verbs: simple present + will → possible plan. – Achte auf die Verbformen.", "Look at the verbs: simple past + would → dream. – Achte auf die Verbformen."],
+        items: [["If we build a hut, we will stay dry.", 0], ["If we had a helicopter, we would fly home.", 1], ["If we find coconuts, we will have food.", 0], ["If I were a fish, I would swim to the mainland.", 1],
+                ["If we make a fire, the rescue plane will see the smoke.", 0], ["If the sailing school knew where we are, they would come at once.", 1], ["If the sun shines, our clothes will dry quickly.", 0], ["If we lived here, we would build a big house.", 1]],
+        show: "Type I (present + will) = plan · Type II (past + would) = dream" }] },
+    { label: "Day 2", title: "🛖 Building a camp",
+      pick: { q: "Who goes to look for fresh water?", qDe: "Wer sucht nach Trinkwasser?", intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>Good morning! We need water AND a camp today. One of us looks for water, the other one starts the camp.</div></div>`,
+        opts: [{ t: "🧭 I go – Sam builds the camp.", intro: "<p>You find a little stream behind the rocks! When you come back, Sam has already collected some wood.</p>", first: [0, 3] },
+               { t: "🛖 Sam goes – I build the camp.", intro: "<p>You build the frame of a hut. An hour later, Sam comes back with a bottle of fresh water from a stream. Great!</p>", first: [2, 4] }] },
+      intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>We're making real plans now – these things can really happen. So we need type I!</div></div><p class="de">Schreibe die richtige Verbform. Kurzformen (won't, doesn't …) sind erlaubt.</p>`,
+      memo: "📌 Type I: if + <b>simple present</b> (he/she/it → -s · don't/doesn't) · main clause: <b>will / won't + verb</b>", tasks: [
+      F(1, "If we ___ wood now, we ___ a fire tonight.", ["collect", "have"], ["collect", "will have|'ll have"]),
+      F(1, "If the fire ___, we ___ cold.", ["not burn", "be"], ["doesn't burn|does not burn", "will be|'ll be"]),
+      F(1, "If I ___ that palm tree, I ___ some coconuts.", ["climb", "get"], ["climb", "will get|'ll get"]),
+      F(1, "If it ___ tonight, the hut ___ us dry.", ["rain", "keep"], ["rains", "will keep"]),
+      F(1, "We ___ lost if we ___ near the beach.", ["not get", "stay"], ["won't get|will not get", "stay"])] },
+    { label: "Day 2 · Night", title: "🔥 Campfire dreams",
+      intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>It's dark now. Let's talk about things we don't have and places where we aren't – just dreams. So that's type II!</div></div>`,
+      memo: "📌 Type II: if + <b>simple past</b> · main clause: <b>would / wouldn't + verb</b> · If I/he/she <b>were</b> · can → <b>could</b>", tasks: [
+      F(2, "If we ___ marshmallows, we ___ them over the fire.", ["have", "roast"], ["had", "would roast|'d roast"]),
+      F(2, "Sam: “If I ___ at home now, I ___ in my warm bed.”", ["be", "sleep"], ["were|was", "would sleep|'d sleep"]),
+      F(2, "If my parents ___ us now, they ___ it!", ["see", "not believe"], ["saw", "wouldn't believe|would not believe"]),
+      F(2, "I ___ scared if Sam ___ here with me.", ["be", "not be"], ["would be|'d be", "weren't|wasn't|were not|was not"]),
+      F(2, "If you ___ have one thing from home, what ___?", ["can", "you / take"], ["could", "would you take"])] },
+    { label: "Day 3", title: "🧭 Real or dream?",
+      intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>Here's the situation this morning. Every time, you have to decide: Is it possible – or not real at all?</div></div>`,
+      memo: "📌 Real / possible → type I · Not true / unreal → type II", tasks: [
+      SIT("Sam has a small mirror in his bag.", "If a plane comes, we will use the mirror to send a signal.", "If a plane came, we would use the mirror to send a signal.", "Sam really has a mirror and a plane may come → type I.", "Sam really <b>has</b> a mirror – it's possible. – Möglich → Typ I."),
+      SIT("You don't have a boat.", "If we had a boat, we would sail home.", "If we have a boat, we will sail home.", "No boat → unreal → type II.", "You <b>don't</b> have a boat. – Unwirklich → Typ II."),
+      SIT("Maybe it will be sunny tomorrow.", "If it is sunny tomorrow, the plane will see our smoke.", "If it was sunny tomorrow, the plane would see our smoke.", "Maybe → possible → type I.", "<b>Maybe</b> = it's possible. – Möglich → Typ I."),
+      SIT("Sam can't swim very well.", "If Sam could swim better, we would try to reach the next island.", "If Sam can swim better, we will try to reach the next island.", "He can't → unreal → type II.", "Sam <b>can't</b> swim well. – Unwirklich → Typ II."),
+      SIT("There are fish in the lagoon.", "If we catch a fish, we will cook it on the fire.", "If we caught a fish, we would cook it on the fire.", "Catching a fish is possible → type I.", "There <b>are</b> fish. – Möglich → Typ I.")] },
+    { label: "Day 4", title: "🍾 Message in a bottle",
+      intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>Let's write three sentences on the paper and throw the bottle into the sea. Every word must be right!</div></div>`,
+      memo: "📌 If-clause first → comma · if-clause second → no comma", tasks: [
+      { t: "order", task: "Put the words in the right order.", taskDe: "Wenn du diese Flasche findest, rettest du zwei Leben.", words: ["If", "you", "find", "this", "bottle,", "you", "will", "save", "two", "lives."], a: "If you find this bottle, you will save two lives." },
+      { t: "order", task: "Put the words in the right order.", taskDe: "Wir wären sehr froh, wenn ihr schnell kämt.", words: ["We", "would", "be", "very", "happy", "if", "you", "came", "quickly."], a: "We would be very happy if you came quickly." },
+      { t: "order", task: "Put the words in the right order.", taskDe: "Wenn das Wetter gut bleibt, warten wir am Strand.", words: ["If", "the", "weather", "stays", "good,", "we", "will", "wait", "on", "the", "beach."], a: "If the weather stays good, we will wait on the beach." }] },
+    { label: "Day 4 · Rescue", title: "🛩️ Sam's diary",
+      intro: `<div class="who"><div class="face">🧑🏽</div><div><b class="n">Sam</b>Can you hear that? An engine! A plane! Quick – before it lands, check my diary. I think I made three mistakes.</div></div>`,
+      memo: "📌 Never will/would in the if-clause · type I: present + will · type II: past + would", tasks: [
+      ER(["If", "the", "plane", "will see", "the", "smoke,", "it", "will", "land."], 3, "sees", ["sees", "saw", "would see"], "No will in the if-clause: If the plane sees …"),
+      ER(["If", "I", "were", "a", "bird,", "I", "will fly", "home."], 6, "would fly", ["would fly", "fly", "flew"], "were (unreal) → type II → would fly."),
+      ER(["If", "it", "rained", "tonight,", "we", "will", "collect", "water."], 2, "rains", ["rains", "will rain", "rain"], "will collect → type I → If it rains …")] }
+  ],
+  scene: (S) => { const d = S.data || {}, k = S.stage, night = k === 3, rescue = k === 6 || S.done;
+    return `<div class="sea ${night ? "night" : ""}"><div class="sun"></div>${rescue ? `<div class="plane">🛩️</div>` : ""}<div class="isl"></div><div class="palm" style="left:calc(50% - 120px)">🌴</div>
+      <div class="me">${E8.myAvatar()}</div><div class="sam">🧑🏽</div>${k >= 3 ? `<div class="camp">${night ? "🔥" : "🛖"}</div>` : ""}</div>
+      <div class="hud">${RES.map(([ic, n]) => { const v = d[n] === undefined ? 100 : d[n], c = v > 60 ? "#7dffb0" : v > 30 ? "#ffc94a" : "#ff7a6b";
+        return `<span class="m">${ic}<span class="b"><i style="width:${v}%;background:${c}"></i></span></span>`; }).join("")}<span>${["DAY 1", "DAY 1", "DAY 2", "NIGHT 2", "DAY 3", "DAY 4", "DAY 4"][Math.min(k, 6)]}</span></div>`; },
+  onMistake: S => { const n = RES[(S.data.rot || 0) % 3][1]; S.data[n] = Math.max(5, (S.data[n] === undefined ? 100 : S.data[n]) - 5); S.data.rot = (S.data.rot || 0) + 1; },
+  outro: `<div style="font-size:56px">🛩️🏝️</div><h1>Rescued!</h1>
+    <p>A seaplane of the coast guard lands in the lagoon. The pilot smiles: “We saw your smoke from far away! If you go sailing again, take a waterproof phone!”</p>`
 });
 </script>
 </body>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Operation Chai · The Hirsch Games</title>
+<link rel="icon" href="logo.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{--bg:radial-gradient(ellipse at 50% 0%,#5a2a10 0%,#1a0a04 70%);--panel:#24140a;--txt:#fff4e6;--muted:#d8b89a;--line:#5a3418;--btn:#2e1a0c;--accent:#ff9a2e;--accentTxt:#2a1000;--accent2:#ffd08a;--bubble:#33200f;--input:#160b04;--ok:#7ee8a0;--bad:#ffcf3a}
+  .route{position:relative;height:170px;overflow:hidden;border-radius:14px 14px 0 0;background:linear-gradient(#ffd9a0,#ffb870 60%,#c9864a 61%,#a86a36)}
+  .route .st{position:absolute;bottom:58px;width:64px;text-align:center;font-size:30px;line-height:1.1}
+  .route .st small{display:block;font-size:11px;font-weight:800;color:#4a2a10;letter-spacing:.04em}
+  .route .rd{position:absolute;left:6%;right:6%;bottom:44px;border-top:4px dashed #6a3a14}
+  .route .box{position:absolute;bottom:40px;font-size:26px;transition:left .9s}
+  .route .q{position:absolute;right:6%;top:12px;background:#fff;color:#5a2a10;border-radius:10px;padding:4px 10px;font-weight:800;font-size:13px}
+  .hud{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;font-family:Menlo,Consolas,monospace;font-size:14px;color:#ffd08a;background:#160b04;border-top:1px solid #5a3418}
+  .read{background:#fff4e0;color:#3a2010;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:19px;line-height:1.6}
+  .read .h{font-size:13px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+  .me{position:absolute;left:3%;top:10px;width:46px;height:46px;border-radius:50%;overflow:hidden;border:3px solid #ff9a2e;background:#fff}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script src="game.js?v=13"></script>
+<script src="juego.js?v=2"></script>
+<script>
+const P = {face:"👩🏽‍💼", name:"Priya (manager)"}, R = {face:"🧔🏽", name:"Raj (truck driver)"}, K = {face:"👨🏾‍🔧", name:"Kiran (warehouse)"};
+const BE = ["am", "is", "are", "was", "were"];
+const nm = s => (" " + String(s).toLowerCase().replace(/[’‘`´]/g, "'").replace(/[.!?,]/g, " ").replace(/\s+/g, " ").trim() + " ").replace(/ (\w+)n't /g, " $1 not ").trim();
+function phint(right, val, pp) {
+  const r = nm(String(right).split("|")[0]).split(" "), v = nm(val).split(" ");
+  const rb = r[0], vb = v[0], neg = r[1] === "not";
+  if (BE.indexOf(vb) < 0) return "Passive = form of <b>be</b> + 3rd form. – Passiv: Form von be + 3. Form (Partizip).";
+  if (vb !== rb) {
+    const past = x => x === "was" || x === "were";
+    if (past(vb) !== past(rb)) return past(rb) ? "Look at the time: it happened in the past → <b>was / were</b> + 3rd form. – Vergangenheit → was/were." : "This happens regularly / now → <b>is / are</b> + 3rd form. – Gegenwart → is/are.";
+    return "Singular or plural? one thing → <b>is / was</b> · more things → <b>are / were</b>. – Einzahl oder Mehrzahl?";
+  }
+  if (neg && v[1] !== "not") return "Don't forget <b>not</b>. – Verneinung nicht vergessen.";
+  return "Check the 3rd form (past participle)" + (pp ? `: <b>${pp}</b>` : "") + ". – Prüfe die 3. Form des Verbs.";
+}
+const C = (q, opts, hint, who) => ({ t: "choice", who: who, q: q, opts: opts, a: opts[0], hint: hint });
+const FP = (q, v, a, pp, qDe) => ({ t: "fill", q: q, v: v, a: a, qDe: qDe, w: 170, check: (g, i) => phint(a[i], g, pp && pp[i]) });
+const ER = (words, bad, fix, opts, hint) => ({ t: "error", task: "Tap the wrong word and correct it.", taskDe: "Tippe das falsche Wort an und verbessere es.", words: words, bad: bad, fix: fix, opts: opts, hint: hint });
+const POSTER = `<div class="read"><div class="h">SpiceRoute Logistics · Mumbai · since 1998</div>Our tea <u>is grown</u> in Assam.<br>The leaves <u>are picked</u> by hand.<br>The boxes <u>are packed</u> in our warehouse in Mumbai.<br>Every week, 2,000 boxes <u>are shipped</u> to Europe.<br>SpiceRoute <u>was founded</u> by Mrs Anjali Mehta in 1998.</div>`;
+const STATIONS = [["🌿", "ASSAM"], ["🏭", "WAREHOUSE"], ["🚚", "TRUCK"], ["🏬", "WAREHOUSE B"], ["🚢", "PORT"]];
+
+JUEGO.start({
+  id: "passive", key: "e10-passive", icon: "🫖", topic: "Passive (simple present · simple past)", title: "Operation Chai",
+  intro: `<p>You are doing a two-week <b>internship</b> at <b>SpiceRoute Logistics</b> in Mumbai. The company ships Indian tea all over the world.</p>
+    <p>On your first morning, there is big trouble: <b>500 boxes of tea</b> for a famous tea shop in London have disappeared! The ship leaves in two days. Your manager, Priya, needs your help to find the tea.</p>
+    <p class="de">Du machst ein Praktikum bei einer Logistikfirma in Mumbai. 500 Kisten Tee sind verschwunden – finde sie! Du kommst nur weiter, wenn alles richtig ist.</p>`,
+  goLabel: "🫖 Start the internship", time: "approx. 20 minutes", rulesLabel: "Passive",
+  get rules() { const S = JUEGO.S; return !S || S.stage < 1 ? `<h2>📘 Passive</h2><p>You will discover the rule yourself in a moment! <span class="de">Die Regel findest du gleich selbst heraus.</span></p>`
+    : `<h2>The passive</h2>
+      <div class="rule"><b>When?</b> The action (what happens) is more important than the person who does it. <span class="de">Die Handlung ist wichtiger als die Person.</span></div>
+      <div class="rule"><b>Simple present passive:</b> am / is / are + 3rd form<br><span class="ex">The leaves are picked by hand. · Our tea is grown in Assam.</span></div>
+      <div class="rule"><b>Simple past passive:</b> was / were + 3rd form<br><span class="ex">The boxes were loaded at 6 am. · The company was founded in 1998.</span></div>
+      <div class="rule">Who did it? → <b>by</b> + person: <span class="ex">SpiceRoute was founded by Mrs Mehta.</span><br>Negative: <span class="ex">The boxes weren't checked.</span></div>
+      <div class="rule">3rd forms: grow – grew – <b>grown</b> · send – sent – <b>sent</b> · take – took – <b>taken</b> · write – wrote – <b>written</b> · make – made – <b>made</b> · find – found – <b>found</b> · drive – drove – <b>driven</b> · give – gave – <b>given</b> · regular: pick – <b>picked</b></div>`; },
+  stages: [
+    { label: "Part 1", title: "🏢 Welcome to SpiceRoute", go: "Read the poster →",
+      intro: `<div class="who"><div class="face">👩🏽‍💼</div><div><b class="n">Priya (manager)</b>Welcome! I'm sorry, but today is crazy. Before we start, look at the poster in our office. It explains what we do – and it uses a special kind of sentence. You'll need it for our reports!</div></div>`,
+      memo: POSTER, pista: "Schau dir die unterstrichenen Verben im Poster an.", tasks: [
+      { t: "choice", q: "<i>The leaves are picked by hand.</i> – Does the sentence say <b>who</b> picks the leaves?", opts: ["No – what happens to the leaves is more important.", "Yes – Priya picks them."], a: "No – what happens to the leaves is more important.", noType: true, after: "In passive sentences, the <b>action</b> is important, not the person. – Die Handlung ist wichtig, nicht die Person.", hint: "Read the sentence again: there is no person in it." },
+      { t: "choice", q: "Look at <i>is grown · are picked · are packed</i>. How is the verb built?", opts: ["form of be + 3rd form", "will + infinitive", "form of have + 3rd form"], a: "form of be + 3rd form", noType: true, after: "Passive = <b>be</b> (is/are) + <b>3rd form</b> (grown, picked …).", hint: "is / are = forms of be · grown, picked = 3rd forms." },
+      { t: "choice", q: "<i>Our tea <b>is</b> grown …</i> but <i>The leaves <b>are</b> picked …</i> – why?", opts: ["tea = singular → is · leaves = plural → are", "is = present, are = past", "There is no reason."], a: "tea = singular → is · leaves = plural → are", noType: true, after: "One thing → is · more things → are.", hint: "Singular or plural?" },
+      { t: "choice", q: "<i>SpiceRoute <b>was founded</b> in 1998.</i> – When did it happen?", opts: ["in the past → was + 3rd form", "every week → was + 3rd form", "in the future"], a: "in the past → was + 3rd form", noType: true, after: "Past → <b>was / were</b> + 3rd form (simple past passive).", hint: "1998 is in the past." },
+      { t: "choice", q: "<i>… was founded <b>by</b> Mrs Anjali Mehta.</i> – What does <b>by</b> tell us?", opts: ["who did it", "where it happened", "when it happened"], a: "who did it", after: "<b>by</b> + person = who did it. – von …", hint: "by Mrs Mehta → she did it." }] },
+    { label: "Part 2", title: "🌿 How our tea is made",
+      intro: `<div class="who"><div class="face">👩🏽‍💼</div><div><b class="n">Priya (manager)</b>To find the boxes, you must know our process. Complete the steps of our tea tour – this happens every day, so it's the simple present.</div></div>`,
+      memo: "📌 Simple present passive: <b>is / are + 3rd form</b> · one thing → is · more things → are", tasks: [
+      C("The tea plants ___ in the hills of Assam.", ["are grown", "is grown", "grown"], "plants = plural → are + grown."),
+      C("The fresh leaves ___ into big baskets.", ["are put", "is put", "are putted"], "put – put – put (irregular): are put."),
+      C("Then the tea ___ in big machines.", ["is dried", "are dried", "is dry"], "tea = singular → is dried."),
+      C("A label ___ on every box.", ["is printed", "are printed", "printed"], "a label = singular → is printed."),
+      C("The boxes ___ to Mumbai by train.", ["are taken", "are took", "are take"], "take – took – taken: are taken."),
+      C("Most of our tea ___ in Europe.", ["is sold", "is selled", "are sold"], "sell – sold – sold: is sold.")] },
+    { label: "Part 3", title: "🔎 Where is the tea?",
+      pick: { q: "Who do you ask first?", qDe: "Wen fragst du zuerst?", intro: `<div class="who"><div class="face">👩🏽‍💼</div><div><b class="n">Priya (manager)</b>The computer says the boxes left the warehouse yesterday. Two people know more: Raj, the truck driver, and Kiran from the warehouse.</div></div>`,
+        opts: [{ t: "🚚 Raj, the truck driver", intro: "<p>Raj is drinking chai next to his truck. “Yesterday? Let me think …”</p>", first: [2, 3] },
+               { t: "🏭 Kiran from the warehouse", intro: "<p>Kiran is checking a list. “Ah, the London boxes! Yes, I remember them …”</p>", first: [0, 1] }] },
+      intro: `<p>Write down what happened <b>yesterday</b>. It's in the past – so you need the <b>simple past passive</b>.</p><p class="de">Gestern → was / were + 3. Form. Kurzformen (wasn't, weren't) sind erlaubt.</p>`,
+      memo: "📌 Simple past passive: <b>was / were + 3rd form</b> · one thing → was · more things → were", tasks: [
+      Object.assign(FP("Kiran: “The boxes ___ at 5 am yesterday.”", ["pack"], ["were packed"], ["pack – packed – packed"]), { who: K }),
+      Object.assign(FP("Kiran: “Every box ___ twice.”", ["check"], ["was checked"], ["check – checked – checked"]), { who: K }),
+      Object.assign(FP("Raj: “The boxes ___ onto my truck at 6 am.”", ["load"], ["were loaded"], ["load – loaded – loaded"]), { who: R }),
+      Object.assign(FP("Raj: “I ___ the address by the computer.”", ["give"], ["was given"], ["give – gave – given"]), { who: R }),
+      Object.assign(FP("Raj: “The truck ___ to Warehouse B.”", ["drive"], ["was driven"], ["drive – drove – driven"]), { who: R }),
+      Object.assign(FP("Kiran: “The papers ___ by the new intern.”", ["not sign"], ["weren't signed|were not signed"], ["sign – signed – signed"]), { who: K })] },
+    { label: "Part 4", title: "🗂️ The report",
+      intro: `<div class="who"><div class="face">👩🏽‍💼</div><div><b class="n">Priya (manager)</b>Great work! Now sort the sentences for my report: what happens <b>every day</b> – and what happened <b>yesterday</b>?</div></div>`,
+      memo: "📌 is / are + 3rd form = present · was / were + 3rd form = past", tasks: [
+      { t: "sort", task: "Every day or yesterday? Look at the verb forms.", taskDe: "Gegenwart oder Vergangenheit?", buckets: ["🔁 Every day (is/are + 3rd form)", "📅 Yesterday (was/were + 3rd form)"],
+        why: ["is / are → present → every day.", "was / were → past → yesterday."],
+        items: [["The tea is checked by Kiran.", 0], ["The boxes were loaded at 6 am.", 1], ["Our trucks are cleaned on Mondays.", 0], ["The wrong address was printed.", 1],
+                ["The papers weren't signed.", 1], ["Emails are sent to every customer.", 0], ["The truck was driven to Warehouse B.", 1], ["Fair wages are paid to all workers.", 0]],
+        show: "is/are + 3rd form = present · was/were + 3rd form = past" }] },
+    { label: "Part 5", title: "🚚 Raj's notes",
+      intro: `<div class="who"><div class="face">🧔🏽</div><div><b class="n">Raj (truck driver)</b>I wrote everything down in my notebook. But my English is not perfect. Can you check it?</div></div>`,
+      memo: "📌 was (one thing) / were (more things) + 3rd form", tasks: [
+      ER(["The", "boxes", "was", "loaded", "very", "early."], 2, "were", ["were", "is", "be"], "boxes = plural → were loaded."),
+      ER(["The", "label", "were", "printed", "by", "the", "computer."], 2, "was", ["was", "are", "is"], "the label = singular → was printed."),
+      ER(["My", "truck", "was", "drived", "to", "Warehouse", "B."], 3, "driven", ["driven", "drove", "drive"], "drive – drove – driven: was driven.")] },
+    { label: "Finale", title: "🏬 Warehouse B",
+      intro: `<p>You drive to Warehouse B with Priya. And there they are: <b>500 boxes of tea</b>, with a label that says “WAREHOUSE B” instead of “PORT”. The new computer printed the wrong address!</p>
+        <div class="who"><div class="face">👩🏽‍💼</div><div><b class="n">Priya (manager)</b>You found them! Let's write the final report together.</div></div>`,
+      memo: "📌 Present: is/are + 3rd form · Past: was/were + 3rd form · by + person", tasks: [
+      { t: "order", task: "Put the words in the right order.", taskDe: "Der Tee wurde in Lagerhaus B gefunden.", words: ["The", "tea", "was", "found", "in", "Warehouse", "B."], a: "The tea was found in Warehouse B." },
+      { t: "order", task: "Put the words in the right order.", taskDe: "Das falsche Etikett wurde vom neuen Computer gedruckt.", words: ["The", "wrong", "label", "was", "printed", "by", "the", "new", "computer."], a: "The wrong label was printed by the new computer." },
+      FP("From now on, every label ___ twice.", ["check"], ["is checked"], ["check – checked – checked"], "Ab jetzt wird jedes Etikett zweimal geprüft."),
+      FP("The boxes ___ to the port this morning.", ["take"], ["were taken"], ["take – took – taken"], "Die Kisten wurden heute Morgen zum Hafen gebracht.")] }
+  ],
+  scene: (S) => { const k = S.done ? 5 : Math.min(S.stage, 5), pos = [0, 1, 2, 2, 3, 3][k], x = 6 + pos * 21.5;
+    return `<div class="route"><div class="me">${E8.myAvatar()}</div><div class="q">${S.done ? "✔ FOUND!" : "📦 500 boxes missing"}</div><div class="rd"></div>
+      ${STATIONS.map((s, i) => `<div class="st" style="left:calc(${6 + i * 21.5}% - 26px)">${s[0]}<small>${s[1]}</small></div>`).join("")}
+      <div class="box" style="left:calc(${S.done ? 92 : x}% - 10px)">📦</div></div>
+      <div class="hud"><span>🔎 CLUES: ${Math.min(k, 5)} / 5</span><span>🚢 SHIP LEAVES IN ${S.done ? "✔" : "2 DAYS"}</span></div>`; },
+  outro: `<div style="font-size:56px">🫖🚢</div><h1>Tea found!</h1>
+    <p>The 500 boxes reach the ship just in time. Two weeks later, a postcard from London arrives at SpiceRoute: “Thank you! The tea was delivered on time – and it tastes wonderful.” Priya smiles: “You were a great intern!”</p>`
+});
+</script>
+</body>
+</html>
