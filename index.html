@@ -187,7 +187,7 @@
 <script src="bosses.js?v=10"></script>
 <script src="covers.js?v=13"></script>
 <script src="vocab-u2.js?v=11"></script>
-<script src="cards.js?v=1"></script>
+<script src="cards.js?v=2"></script>
 <script>
 /* ===== Seiten-Einstellungen (für jede Klasse anpassen) ===== */
 const SITE = { title: "ENGLISH 10", sub: "ENGLISH 10 · ORANGE LINE 6" };
@@ -208,6 +208,8 @@ let SCORES = {}, SEL = null;
 /* Alle Spiele als Liste */
 const ACC = g => g.accent || ((String(g.color).match(/#[0-9a-fA-F]{6}/g)||["#5a3cb0"]).pop());
 const COVER = g => COVERS[g.id] || `<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="cg_${g.id}"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><circle cx="110" cy="66" r="62" fill="url(#cg_${g.id})"/><text x="110" y="96" font-size="80" text-anchor="middle">${g.icon||"🎮"}</text></svg>`;
+const LOCK = window.LOCKED || [];
+GRAMMAR.splice(0, GRAMMAR.length, ...GRAMMAR.filter(g => LOCK.indexOf(g.id) < 0));
 const ALL = [], SHELVES = [], BOSSCARDS = [];
 if (Object.values(VOCAB).some(u => u.sections && u.sections.length)) {
   ALL.push({id:"daily", href:"boss.html?id=daily", topic:"Daily Challenge", name:"Boss of the Day", info:"10 random words from all units – a new boss every day. Up to 15 coins, once a day!", art:COVERS.daily, accent:"#e0533a", color:"linear-gradient(135deg,#7a1e3a,#e0533a)", shelf:"daily"});
@@ -221,7 +223,7 @@ if (Object.values(VOCAB).some(u => u.sections && u.sections.length)) {
   const u = VOCAB[key], title = (u && u.unit) || UNITS[key] || key, gr = GRAMMAR.filter(g => g.unit === key);
   if (gr.length) { SHELVES.push({key:key+"-g", title:title, sub:"Grammar missions"});
     const BU = {u2:["⛈️","The Monsoon"]}[key];
-    if (BU) BOSSCARDS.push({id:"final-"+key, href:"jefe-final.html?u="+key.slice(1), topic:"Final boss · "+title, name:BU[1], info:`The final boss of ${title}! 3 phases, harder and harder – everything from the unit. Perfect before the test. – Endgegner: ideal vor der Klassenarbeit.`, art:`<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="bg${key}" cx=".5" cy="1.1" r=".9"><stop offset="0" stop-color="#ff5a2a"/><stop offset="1" stop-color="#1a0404"/></radialGradient></defs><rect width="220" height="140" rx="10" fill="url(#bg${key})"/><text x="110" y="98" font-size="74" text-anchor="middle">${BU[0]}</text><rect x="40" y="14" width="140" height="10" rx="5" fill="#0008" stroke="#ff5a2a"/><rect x="42" y="16" width="96" height="6" rx="3" fill="#ff3a2a"/><text x="110" y="128" font-family="Arial Black,Impact" font-size="13" fill="#ffd23a" text-anchor="middle">FINAL BOSS</text></svg>`, accent:"#ff3a2a", color:"linear-gradient(135deg,#3a0a0a,#ff3a2a)", shelf:key+"-g", isNew:true, boss:true}); gr.forEach(g => ALL.push({id:g.id, href:g.file, topic:g.topic, name:g.name, info:g.info, art:COVER(g), accent:ACC(g), color:g.color, shelf:key+"-g", isNew:g.isNew})); }
+    if (BU && LOCK.indexOf("final-"+key) < 0) BOSSCARDS.push({id:"final-"+key, href:"jefe-final.html?u="+key.slice(1), topic:"Final boss · "+title, name:BU[1], info:`The final boss of ${title}! 3 phases, harder and harder – everything from the unit. Perfect before the test. – Endgegner: ideal vor der Klassenarbeit.`, art:`<svg viewBox="0 0 220 140" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="bg${key}" cx=".5" cy="1.1" r=".9"><stop offset="0" stop-color="#ff5a2a"/><stop offset="1" stop-color="#1a0404"/></radialGradient></defs><rect width="220" height="140" rx="10" fill="url(#bg${key})"/><text x="110" y="98" font-size="74" text-anchor="middle">${BU[0]}</text><rect x="40" y="14" width="140" height="10" rx="5" fill="#0008" stroke="#ff5a2a"/><rect x="42" y="16" width="96" height="6" rx="3" fill="#ff3a2a"/><text x="110" y="128" font-family="Arial Black,Impact" font-size="13" fill="#ffd23a" text-anchor="middle">FINAL BOSS</text></svg>`, accent:"#ff3a2a", color:"linear-gradient(135deg,#3a0a0a,#ff3a2a)", shelf:key+"-g", isNew:true, boss:true}); gr.forEach(g => ALL.push({id:g.id, href:g.file, topic:g.topic, name:g.name, info:g.info, art:COVER(g), accent:ACC(g), color:g.color, shelf:key+"-g", isNew:g.isNew})); }
   if (u && u.sections.length) {
     SHELVES.push({key:key+"-v", title:title, sub:"Vocabulary bosses"});
     u.sections.forEach(s => { const c = BOSSCOL[s.boss]||["#333333","#555555"]; ALL.push({id:s.id, href:"boss.html?id="+s.id, topic:"Vocabulary boss · "+s.part, name:s.title, info:`Fight ${s.bossName}! ${s.words.length} words · Vocabulary ${s.pages}`, art:BOSSART[s.boss]||"", accent:c[1], color:`linear-gradient(135deg,${c[0]},${c[1]})`, shelf:key+"-v"}); });

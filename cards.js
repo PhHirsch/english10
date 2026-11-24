@@ -1,5 +1,7 @@
 /* Trading cards: jede Karte gehört fest zu einem Spiel – kein Zufall.
    Bekommen: mindestens 1 Stern · Gold: 3 Sterne · 👑: ohne Fehler (Flawless) · 🔥: Hard mode geschafft */
+/* Noch nicht freigegebene Spiele (Lobby + Album blenden sie aus). Zum Freischalten die id hier löschen. */
+window.LOCKED = ["passive", "final-u2"];
 window.CROMOS = [
   { id: "if-museum", f: "🤖", n: "ARGUS", c: "#2a1f3a", t: "The security computer of the City History Museum. If you speak perfect English, he will open every door.", de: "aus Night at the Museum" },
   { id: "if-island", f: "🧑🏽", n: "Sam", c: "#0b4a58", t: "Your friend from the sailing course. If he had a boat, he would sail home – but he's got a mirror!", de: "aus Stranded" },
@@ -15,6 +17,7 @@ window.CROMOS = [
   const E = { tornado: "🌪️", robot: "🤖", ghost: "👻", bossy: "😠", slime: "🟢", manager: "💼", locker: "🗄️" };
   Object.values(window.VOCAB || {}).forEach(u => u.sections.forEach(s => window.CROMOS.splice(window.CROMOS.length - 3, 0, { id: s.id, f: E[s.boss] || "👾", n: s.bossName, c: "#4a1a5a", t: "Vocabulary boss: " + s.title + ". Beaten – the words are yours!", de: "Vokabel-Boss " + (s.part || "") })));
 })();
+window.CROMOS = window.CROMOS.filter(c => window.LOCKED.indexOf(c.id) < 0);
 window.cromoState = function (s, id) {
   const st = (s && s.stars) || {}, pf = (s && s.perfect) || [];
   return { got: (st[id] || 0) > 0, gold: (st[id] || 0) >= 3, crown: pf.indexOf(id) >= 0, hard: (st[id + "-hard"] || 0) > 0 };
