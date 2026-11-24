@@ -429,24 +429,25 @@
       s += ln([ox + 5, oy + 5, .37], [ox + 5, oy + 5, 1.4], "#b8c4ce", 5);
     }
     if (on(1)) { // CN Tower (Toronto) – back corner
-      s += disc(ox + 1.4, oy + 1.4, .02, .9, "#9aa3ad") + blk(ox + 1.2, oy + 1.2, 0, .4, .4, 8, "#c4ccd4") + disc(ox + 1.4, oy + 1.4, 7.6, .9, "#8a97a8") + disc(ox + 1.4, oy + 1.4, 8.1, .75, "#ffe27a");
-      s += ln([ox + 1.4, oy + 1.4, 8.2], [ox + 1.4, oy + 1.4, 11.6], "#c4ccd4", 2) + ln([ox + 1.4, oy + 1.4, 11.6], [ox + 1.4, oy + 1.4, 11.8], "#ff3a3a", 4);
+      s += disc(ox + 1.6, oy + 1.6, .02, 1.2, "#9aa3ad") + blk(ox + 1.3, oy + 1.3, 0, .6, .6, 12, "#c4ccd4") + disc(ox + 1.6, oy + 1.6, 11.2, 1.3, "#8a97a8") + disc(ox + 1.6, oy + 1.6, 11.9, 1.05, "#ffe27a") + disc(ox + 1.6, oy + 1.6, 12.3, .8, "#8a97a8");
+      s += ln([ox + 1.6, oy + 1.6, 12.4], [ox + 1.6, oy + 1.6, 17], "#c4ccd4", 3) + ln([ox + 1.6, oy + 1.6, 17], [ox + 1.6, oy + 1.6, 17.3], "#ff3a3a", 5);
     }
     if (on(3)) { // Sky Tower (Auckland)
-      s += blk(ox + 8.5, oy + 1.2, 0, .35, .35, 6, "#d3d8de") + disc(ox + 8.68, oy + 1.38, 5.5, .7, "#8a97a8") + disc(ox + 8.68, oy + 1.38, 5.9, .55, "#ffe27a") + ln([ox + 8.68, oy + 1.38, 6.1], [ox + 8.68, oy + 1.38, 8.4], "#d3d8de", 1.6);
+      s += blk(ox + 8.3, oy + 1.2, 0, .5, .5, 9, "#d3d8de") + disc(ox + 8.55, oy + 1.45, 8.3, 1, "#8a97a8") + disc(ox + 8.55, oy + 1.45, 8.9, .8, "#ffe27a") + ln([ox + 8.55, oy + 1.45, 9.2], [ox + 8.55, oy + 1.45, 12.5], "#d3d8de", 2.4);
     }
     if (on(2)) { // Gateway of India
-      s += blk(ox + 4, oy + .6, 0, .8, .9, 2.4, "#e2c99a") + blk(ox + 6.2, oy + .6, 0, .8, .9, 2.4, "#e2c99a") + blk(ox + 4, oy + .6, 2.4, 3, .9, .7, "#d4b680");
-      [4.4, 6.6].forEach(x => { s += blk(ox + x - .2, oy + .8, 3.1, .4, .4, .6, "#e2c99a"); });
+      s += blk(ox + 3.6, oy + .5, 0, 1.1, 1.3, 3.6, "#e2c99a") + blk(ox + 6.5, oy + .5, 0, 1.1, 1.3, 3.6, "#e2c99a") + blk(ox + 3.6, oy + .5, 3.6, 4, 1.3, 1, "#d4b680");
+      [4.15, 7.05].forEach(x => { s += blk(ox + x - .3, oy + .85, 4.6, .6, .6, .9, "#e2c99a") + disc(ox + x, oy + 1.15, 5.5, .35, "#d4b680"); });
+      s += disc(ox + 5.6, oy + 1.15, 4.6, .6, "#d4b680");
     }
     if (on(0)) { // Big Ben
-      s += shadow(ox + 2, oy + 8, 1.2, .8) + blk(ox + 1.3, oy + 7.3, 0, 1.3, 1.3, 4.6, "#c9a86a") + blk(ox + 1.2, oy + 7.2, 4.6, 1.5, 1.5, 1, "#d8bb80") + blk(ox + 1.5, oy + 7.5, 5.6, .9, .9, 1, "#5a7a6a");
-      const t = P(ox + 1.95, oy + 8.6, 5.1); s += `<text x="${f1(t[0])}" y="${f1(t[1]) + 4}" font-size="14" text-anchor="middle">🕰️</text>`;
+      s += shadow(ox + 2.2, oy + 8.2, 1.6, 1) + blk(ox + 1.2, oy + 7.2, 0, 1.9, 1.9, 6.6, "#c9a86a") + blk(ox + 1.05, oy + 7.05, 6.6, 2.2, 2.2, 1.4, "#d8bb80") + blk(ox + 1.45, oy + 7.45, 8, 1.4, 1.4, 1.3, "#5a7a6a") + ln([ox + 2.15, oy + 8.15, 9.3], [ox + 2.15, oy + 8.15, 10.6], "#5a7a6a", 3);
+      const t = P(ox + 2.15, oy + 9.25, 7.3); s += `<text x="${f1(t[0])}" y="${f1(t[1]) + 6}" font-size="20" text-anchor="middle">🕰️</text>`;
       s += tree(ox + 8.8, oy + 4.2, 1) + tree(ox + .9, oy + 4.6, .9);
     }
     if (on(4)) { // Taj Mahal
-      s += blk(ox + 6.3, oy + 6.6, 0, 2.6, 2.6, .3, "#e8e2d4") + blk(ox + 6.8, oy + 7.1, .3, 1.6, 1.6, 1.4, "#f4f1ea") + disc(ox + 7.6, oy + 7.9, 1.7, .7, "#f4f1ea") + disc(ox + 7.6, oy + 7.9, 2.1, .5, "#fbf8f2") + ln([ox + 7.6, oy + 7.9, 2.2], [ox + 7.6, oy + 7.9, 2.8], "#d8b04a", 2);
-      [[6.4, 6.7], [8.8, 6.7], [6.4, 9.1], [8.8, 9.1]].forEach(([x, y]) => { s += blk(ox + x - .1, oy + y - .1, .3, .2, .2, 2, "#f4f1ea"); });
+      s += blk(ox + 5.9, oy + 6.2, 0, 3.6, 3.6, .4, "#e8e2d4") + blk(ox + 6.5, oy + 6.8, .4, 2.4, 2.4, 2, "#f4f1ea") + disc(ox + 7.7, oy + 8, 2.4, 1.05, "#f4f1ea") + disc(ox + 7.7, oy + 8, 3, .8, "#fbf8f2") + disc(ox + 7.7, oy + 8, 3.5, .45, "#fbf8f2") + ln([ox + 7.7, oy + 8, 3.6], [ox + 7.7, oy + 8, 4.6], "#d8b04a", 2.4);
+      [[6, 6.3], [9.4, 6.3], [6, 9.7], [9.4, 9.7]].forEach(([x, y]) => { s += blk(ox + x - .15, oy + y - .15, .4, .3, .3, 3, "#f4f1ea") + disc(ox + x, oy + y, 3.4, .25, "#fbf8f2"); });
     }
     if (on(5)) { const c = P(ox + 5, oy + 5, 10); s += [[-60, 0, "#ff4f8b"], [0, -30, "#ffd23a"], [60, 10, "#3ab0ff"]].map(([dx, dy, col]) => `<g transform="translate(${f1(c[0] + dx)} ${f1(c[1] + dy)})" stroke="${col}" stroke-width="3" stroke-linecap="round">${[0, 45, 90, 135, 180, 225, 270, 315].map(a => { const r = a * Math.PI / 180; return `<line x1="${f1(Math.cos(r) * 6)}" y1="${f1(Math.sin(r) * 6)}" x2="${f1(Math.cos(r) * 20)}" y2="${f1(Math.sin(r) * 20)}"/>`; }).join("")}</g>`).join(""); }
     const lb = P(ox + 5, oy + 5, 3.2);
