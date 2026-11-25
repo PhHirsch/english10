@@ -1,7 +1,7 @@
 /* Trading cards: jede Karte gehört fest zu einem Spiel – kein Zufall.
    Bekommen: mindestens 1 Stern · Gold: 3 Sterne · 👑: ohne Fehler (Flawless) · 🔥: Hard mode geschafft */
 /* Noch nicht freigegebene Spiele (Lobby + Album blenden sie aus). Zum Freischalten die id hier löschen. */
-window.LOCKED = ["passive", "final-u2"];
+window.LOCKED = ["passive", "final-u2", "if-museum", "if-island"];
 window.CROMOS = [
   { id: "if-museum", f: "🤖", n: "ARGUS", c: "#2a1f3a", t: "The security computer of the City History Museum. If you speak perfect English, he will open every door.", de: "aus Night at the Museum" },
   { id: "if-island", f: "🧑🏽", n: "Sam", c: "#0b4a58", t: "Your friend from the sailing course. If he had a boat, he would sail home – but he's got a mirror!", de: "aus Stranded" },

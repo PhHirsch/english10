@@ -187,7 +187,7 @@
 <script src="bosses.js?v=10"></script>
 <script src="covers.js?v=13"></script>
 <script src="vocab-u2.js?v=11"></script>
-<script src="cards.js?v=2"></script>
+<script src="cards.js?v=3"></script>
 <script>
 /* ===== Seiten-Einstellungen (für jede Klasse anpassen) ===== */
 const SITE = { title: "ENGLISH 10", sub: "ENGLISH 10 · ORANGE LINE 6" };
@@ -576,7 +576,7 @@ function tourStep(){
 /* ===== Start ===== */
 (function(){
   let pre = null; try{ pre = sessionStorage.getItem("e10sel"); }catch(e){}
-  const START = "if-museum"; /* Spiel, das beim Öffnen zuerst ausgewählt ist */
+  const START = "boss-u2-wayin1"; /* Spiel, das beim Öffnen zuerst ausgewählt ist */
   SEL = ALL.find(g => g.id === pre) || ALL.find(g => g.id === START) || ALL.find(g => g.isNew) || ALL[0];
   render(); setBg(SEL);
   if (E8.online()) E8.api("scores",{}).then(r => { if (r.ok) { SCORES = r.scores; feat(); if (state()) hero(); } });
